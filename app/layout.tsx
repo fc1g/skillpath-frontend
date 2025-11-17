@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { Inter } from 'next/font/google';
+import { ThemeProvider } from '@/app/providers/theme-provider';
+
+const inter = Inter({
+	variable: '--font-inter',
+	subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -13,8 +20,19 @@ export default function RootLayout({
 	children: ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body>{children}</body>
+		<html className="h-full" lang="en" suppressHydrationWarning>
+			<body className={`${inter.variable} h-full antialiased`}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<div className="wrapper">
+						<main className="flex-auto">{children}</main>
+					</div>
+				</ThemeProvider>
+			</body>
 		</html>
 	);
 }
