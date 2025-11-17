@@ -8,6 +8,8 @@ export const API_ROUTES = {
 	AUTH: {
 		LOGIN: '/api/auth/login',
 		SIGNUP: '/api/auth/signup',
+		LOGOUT: '/api/auth/logout',
+		REFRESH: '/api/auth/refresh',
 	},
 } as const;
 
