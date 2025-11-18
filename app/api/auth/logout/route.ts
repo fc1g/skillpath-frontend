@@ -35,5 +35,10 @@ export async function POST(request: Request) {
 		path: '/',
 	});
 
+	res.cookies.set('accessToken', '', {
+		maxAge: 0,
+		path: '/',
+	});
+
 	return res;
 }

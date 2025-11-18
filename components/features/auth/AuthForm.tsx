@@ -59,7 +59,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full max-w-md space-y-6 rounded-lg border-2 p-4"
+				className="w-full max-w-xs space-y-3 rounded-lg border-2 p-2 sm:max-w-md sm:space-y-6 sm:p-4"
 			>
 				<FormField
 					control={form.control}
@@ -70,13 +70,15 @@ export default function AuthForm({ type }: AuthFormProps) {
 							<FormControl>
 								<Input
 									placeholder="example@gmail.com"
+									autoComplete="email"
 									required={true}
 									type="email"
+									aria-invalid={!!form.formState.errors.email}
 									{...field}
 								/>
 							</FormControl>
 							{form.formState.errors.email && (
-								<FormMessage>
+								<FormMessage role="alert" aria-live="polite">
 									{form.formState.errors.email?.message ?? ''}
 								</FormMessage>
 							)}
@@ -93,13 +95,15 @@ export default function AuthForm({ type }: AuthFormProps) {
 							<FormControl>
 								<Input
 									placeholder="********"
+									autoComplete={!isSignup ? 'new-password' : 'current-password'}
 									required={true}
 									type="password"
+									aria-invalid={!!form.formState.errors.password}
 									{...field}
 								/>
 							</FormControl>
 							{form.formState.errors.password && (
-								<FormMessage>
+								<FormMessage role="alert" aria-live="polite">
 									{form.formState.errors.password?.message ?? ''}
 								</FormMessage>
 							)}
@@ -117,14 +121,21 @@ export default function AuthForm({ type }: AuthFormProps) {
 								<FormControl>
 									<Input
 										placeholder="********"
+										autoComplete={
+											!isSignup ? 'new-password' : 'current-password'
+										}
 										required={true}
 										type="password"
+										aria-invalid={
+											!!(form as UseFormReturn<SignUpInput>).formState.errors
+												.passwordConfirm
+										}
 										{...field}
 									/>
 								</FormControl>
 								{(form as UseFormReturn<SignUpInput>).formState.errors
 									.passwordConfirm && (
-									<FormMessage>
+									<FormMessage role="alert" aria-live="polite">
 										{(form as UseFormReturn<SignUpInput>).formState.errors
 											.passwordConfirm?.message ?? ''}
 									</FormMessage>
@@ -149,30 +160,26 @@ export default function AuthForm({ type }: AuthFormProps) {
 				{/*	</div>*/}
 				{/*)}*/}
 
-				<div className="flex flex-col items-center justify-center gap-4">
-					<span className="text-sm">
-						Or {isSignup ? 'Sign up' : 'Login'} with
-					</span>
+				<div className="flex flex-col justify-center gap-4">
+					<div className="flex flex-col items-center space-y-1">
+						<span className="text-sm">Or continue with</span>
 
-					{isSignup ? (
+						<Separator />
+					</div>
+
+					<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
 						<OAuthButton
-							icon="google-su"
-							className="size-44 fill-black dark:fill-white"
+							icon="google"
+							className="size-52 fill-black md:size-48 dark:fill-white"
 							onClick={() => startOauth('google')}
 						/>
-					) : (
-						<OAuthButton
-							icon="google-si"
-							className="size-44 fill-black dark:fill-white"
-							onClick={() => startOauth('google')}
-						/>
-					)}
 
-					<OAuthButton
-						icon="github"
-						className="size-24 dark:fill-white"
-						onClick={() => startOauth('github')}
-					/>
+						<OAuthButton
+							icon="github"
+							className="size-24 dark:fill-white"
+							onClick={() => startOauth('github')}
+						/>
+					</div>
 				</div>
 
 				<Button
@@ -189,7 +196,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 							: 'Login'}
 				</Button>
 
-				<Separator className="my-8" />
+				<Separator className="my-4 sm:my-8" />
 
 				<div className="flex flex-col items-center justify-center gap-4">
 					<span className="text-sm">

@@ -32,48 +32,42 @@ async function authRequest<T>(
 }
 
 export const useAuth = () => {
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-	const setSession = useAuthStore(state => state.setSession);
+	const clearSession = useAuthStore(state => state.clearSession);
 	const router = useRouter();
 
 	const login = async (credentials: LoginInput) => {
-		const data = await authRequest<LoginInput>(
+		await authRequest<LoginInput>(
 			API_ROUTES.AUTH.LOGIN,
 			credentials,
 			'Login failed',
 		);
 
-		const { accessToken } = data as { accessToken: string };
-		setSession(accessToken);
 		router.push(APP_ROUTES.HOME);
 	};
 
 	const signup = async (credentials: SignUpInput) => {
-		const data = await authRequest<SignUpInput>(
+		await authRequest<SignUpInput>(
 			API_ROUTES.AUTH.SIGNUP,
 			credentials,
 			'Signup failed',
 		);
 
-		const { accessToken } = data as { accessToken: string };
-		setSession(accessToken);
 		router.push(APP_ROUTES.HOME);
 	};
 
 	const logout = async () => {
 		await authRequest(API_ROUTES.AUTH.LOGOUT, undefined, 'Logout failed');
-		router.push(APP_ROUTES.SIGNUP);
+		clearSession();
+		router.push(APP_ROUTES.LOGIN);
 	};
 
 	const refresh = async () => {
-		const data = await authRequest(
+		await authRequest(
 			API_ROUTES.AUTH.REFRESH,
 			undefined,
 			'Failed to rotate tokens',
 		);
 
-		const { accessToken } = data as { accessToken: string };
-		setSession(accessToken);
 		router.push(APP_ROUTES.HOME);
 	};
 
@@ -82,7 +76,6 @@ export const useAuth = () => {
 	}, []);
 
 	return {
-		isAuthenticated: isAuthenticated(),
 		login,
 		signup,
 		logout,

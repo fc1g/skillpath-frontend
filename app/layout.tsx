@@ -1,8 +1,8 @@
+import { ThemeProvider } from '@/app/providers/theme-provider';
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
 import './globals.css';
-import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/app/providers/theme-provider';
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -28,9 +28,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="wrapper">
-						<main className="flex-auto">{children}</main>
-					</div>
+					{children}
 				</ThemeProvider>
 			</body>
 		</html>

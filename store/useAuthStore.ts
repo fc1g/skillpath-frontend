@@ -1,31 +1,49 @@
+import { User } from '@/types';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { create } from 'zustand/react';
 
 type State = {
-	accessToken: string | null;
+	user: User | null;
+	hasHydrated: boolean;
 };
 
 type Action = {
-	setSession: (accessToken: string) => void;
+	setUser: (user: User) => void;
+	updateUser: (
+		patch: Partial<Omit<User, 'id' | 'updatedAt' | 'createdAt'>>,
+	) => void;
 	clearSession: () => void;
-	isAuthenticated: () => boolean;
+
+	markHydrated: () => void;
 };
 
 export const useAuthStore = create<State & Action>()(
 	devtools(
 		persist(
-			(set, get) => ({
-				accessToken: null,
+			set => ({
+				user: null,
+				hasHydrated: false,
 
-				setSession: (accessToken: string) => set({ accessToken }),
-				clearSession: () => set({ accessToken: null }),
+				setUser: user => set({ user }),
+				updateUser: patch =>
+					set(state =>
+						state.user ? { user: { ...state.user, ...patch } } : state,
+					),
+				clearSession: () => set({ user: null }),
 
-				isAuthenticated: () => !!get().accessToken,
+				markHydrated: () => set({ hasHydrated: true }),
 			}),
 			{
 				name: 'auth',
 				storage: createJSONStorage(() => sessionStorage),
+				partialize: state => ({ user: state.user }),
+				onRehydrateStorage: () => state => state?.markHydrated(),
 			},
 		),
+		{ name: 'auth-store' },
 	),
 );
+
+export const useUser = () => useAuthStore(state => state.user);
+export const useIsAuthenticated = () => useAuthStore(state => !!state.user);
+export const useHasHydrated = () => useAuthStore(state => state.hasHydrated);
