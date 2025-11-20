@@ -74,6 +74,8 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+	--mouse-x: 0px;
+	--mouse-y: 0px;
 }
 
 .dark {
@@ -123,5 +125,45 @@
 @layer components {
 	.wrapper {
 		@apply flex min-h-full flex-col overflow-hidden;
+	}
+}
+
+/* Spotlight effect */
+@layer components {
+	.spotlight-card {
+		@apply bg-card text-card-foreground relative rounded-md cursor-pointer;
+	}
+
+	.spotlight-card:active {
+		@apply shadow-2xl transition duration-300 shadow-secondary;
+	}
+
+	.dark .spotlight-card:active {
+		@apply shadow-2xl transition duration-300 shadow-primary-foreground;
+	}
+
+	.spotlight-card:hover::before {
+		opacity: 1;
+	}
+
+	.spotlight-card::before {
+		@apply rounded-[inherit] content-[''] opacity-0 transition-opacity duration-500 transform h-full w-full left-0 top-0 absolute pointer-events-none;
+	}
+
+	.dark .spotlight-card::before {
+		background: radial-gradient(
+				800px circle at var(--mouse-x) var(--mouse-y),
+				rgba(255, 255, 255, 0.06),
+				transparent 40%
+		);
+		z-index: 3;
+	}
+
+	.spotlight-card::before {
+		background: radial-gradient(
+				800px circle at var(--mouse-x) var(--mouse-y),
+				rgba(0, 0, 0, 0.10),
+				transparent 40%
+		);
 	}
 }

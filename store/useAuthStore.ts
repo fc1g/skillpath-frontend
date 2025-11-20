@@ -4,7 +4,7 @@ import { create } from 'zustand/react';
 
 type State = {
 	user: User | null;
-	hasHydrated: boolean;
+	hasHydratedAuth: boolean;
 };
 
 type Action = {
@@ -14,7 +14,7 @@ type Action = {
 	) => void;
 	clearSession: () => void;
 
-	markHydrated: () => void;
+	markHydratedAuth: () => void;
 };
 
 export const useAuthStore = create<State & Action>()(
@@ -22,7 +22,7 @@ export const useAuthStore = create<State & Action>()(
 		persist(
 			set => ({
 				user: null,
-				hasHydrated: false,
+				hasHydratedAuth: false,
 
 				setUser: user => set({ user }),
 				updateUser: patch =>
@@ -31,13 +31,13 @@ export const useAuthStore = create<State & Action>()(
 					),
 				clearSession: () => set({ user: null }),
 
-				markHydrated: () => set({ hasHydrated: true }),
+				markHydratedAuth: () => set({ hasHydratedAuth: true }),
 			}),
 			{
 				name: 'auth',
 				storage: createJSONStorage(() => sessionStorage),
 				partialize: state => ({ user: state.user }),
-				onRehydrateStorage: () => state => state?.markHydrated(),
+				onRehydrateStorage: () => state => state?.markHydratedAuth(),
 			},
 		),
 		{ name: 'auth-store' },
@@ -46,4 +46,5 @@ export const useAuthStore = create<State & Action>()(
 
 export const useUser = () => useAuthStore(state => state.user);
 export const useIsAuthenticated = () => useAuthStore(state => !!state.user);
-export const useHasHydrated = () => useAuthStore(state => state.hasHydrated);
+export const useHasHydrated = () =>
+	useAuthStore(state => state.hasHydratedAuth);

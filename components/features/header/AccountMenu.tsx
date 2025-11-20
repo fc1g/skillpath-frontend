@@ -10,7 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui';
 import { useAuth } from '@/hooks';
-import { useIsAuthenticated, useUser } from '@/store/useAuthStore';
+import { useIsAuthenticated, useUser } from '@/store';
 import Link from 'next/link';
 
 export default function AccountMenu() {
@@ -22,10 +22,15 @@ export default function AccountMenu() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button size="icon-lg" variant="ghost">
-					<svg className="size-6">
-						<use href="/icons/sprite.svg#account-menu" />
-					</svg>
+				<Button variant="outline">
+					<>
+						<svg className="size-6">
+							<use href="/icons/sprite.svg#account-menu" />
+						</svg>
+						<span>
+							<strong>Account</strong>
+						</span>
+					</>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>

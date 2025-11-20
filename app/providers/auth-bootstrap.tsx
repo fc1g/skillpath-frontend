@@ -1,8 +1,8 @@
 'use client';
 
-import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect } from 'react';
+import { useAuthStore } from '@/store';
 import { User } from '@/types';
+import { useEffect } from 'react';
 
 type AuthBootstrapProps = {
 	user: User | null;
@@ -18,6 +18,7 @@ export default function AuthBootstrap({ user }: AuthBootstrapProps) {
 		} else {
 			clearSession();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return null;

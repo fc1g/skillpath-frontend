@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { getUser } from '@/services/getUser';
 import AuthBootstrap from '@/app/providers/auth-bootstrap';
 import { Footer, Header } from '@/components/features';
+import { ApolloProvider } from '@/app/providers/apollo-provider';
 
 export default async function AppLayout({
 	children,
@@ -13,7 +14,7 @@ export default async function AppLayout({
 	const user = await getUser(accessToken);
 
 	return (
-		<>
+		<ApolloProvider>
 			<AuthBootstrap user={user} />
 
 			<div className="wrapper">
@@ -23,6 +24,6 @@ export default async function AppLayout({
 
 				<Footer />
 			</div>
-		</>
+		</ApolloProvider>
 	);
 }

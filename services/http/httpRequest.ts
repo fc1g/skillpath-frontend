@@ -1,5 +1,6 @@
 import { HttpRequestOptions, HttpResponse } from '@/services/http/http.types';
 import { buildResponseHeaders } from '@/services/http/http.utils';
+import { INTERNAL_API_URL } from '@/config/env';
 
 export async function httpRequest<T>({
 	path,
@@ -11,7 +12,7 @@ export async function httpRequest<T>({
 	const headers = buildResponseHeaders({ accessToken, cookies });
 
 	try {
-		const res = await fetch(`${process.env.API_BASE_URL}/${path}`, {
+		const res = await fetch(`${INTERNAL_API_URL}/${path}`, {
 			method: method ?? 'GET',
 			body: method === 'GET' || !body ? undefined : JSON.stringify(body),
 			headers,
