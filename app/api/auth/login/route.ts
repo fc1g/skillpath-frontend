@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 	}
 
 	const backendResponse = await httpRequest<{ accessToken: string }>({
-		path: '/auth/login',
+		path: 'auth/login',
 		method: 'POST',
 		body: parsedBody.data,
 	});

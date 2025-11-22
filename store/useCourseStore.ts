@@ -1,14 +1,19 @@
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { create } from 'zustand/react';
 
+type LastVisitedCourse = {
+	id: string;
+	slug: string;
+}
+
 type State = {
-	lastVisitedCourseId: string | null;
+	lastVisitedCourse: LastVisitedCourse | null;
 	hasHydratedCourse: boolean;
 };
 
 type Action = {
-	setLastVisitedCourseId: (courseId: string) => void;
-	clearLastVisitedCourseId: () => void;
+	setLastVisitedCourse: (lastVisitedCourse: LastVisitedCourse) => void;
+	clearLastVisitedCourse: () => void;
 
 	markHydratedCourse: () => void;
 };
@@ -17,12 +22,12 @@ export const useCourseStore = create<State & Action>()(
 	devtools(
 		persist(
 			set => ({
-				lastVisitedCourseId: null,
+				lastVisitedCourse: null,
 				hasHydratedCourse: false,
 
-				setLastVisitedCourseId: courseId =>
-					set({ lastVisitedCourseId: courseId }),
-				clearLastVisitedCourseId: () => set({ lastVisitedCourseId: null }),
+				setLastVisitedCourse: lastVisitedCourse =>
+					set({ lastVisitedCourse: {...lastVisitedCourse} }),
+				clearLastVisitedCourse: () => set({ lastVisitedCourse: null }),
 
 				markHydratedCourse: () => set({ hasHydratedCourse: true }),
 			}),
@@ -30,7 +35,7 @@ export const useCourseStore = create<State & Action>()(
 				name: 'course',
 				storage: createJSONStorage(() => localStorage),
 				partialize: state => ({
-					lastVisitedCourseId: state.lastVisitedCourseId,
+					lastVisitedCourse: state.lastVisitedCourse,
 				}),
 				onRehydrateStorage: () => state => state?.markHydratedCourse(),
 			},
@@ -39,7 +44,7 @@ export const useCourseStore = create<State & Action>()(
 	),
 );
 
-export const useLastVisitedCourseId = () =>
-	useCourseStore(state => state.lastVisitedCourseId);
+export const useLastVisitedCourse = () =>
+	useCourseStore(state => state.lastVisitedCourse);
 export const useHasHydratedCourse = () =>
 	useCourseStore(state => state.hasHydratedCourse);

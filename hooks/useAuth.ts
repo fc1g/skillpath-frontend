@@ -2,7 +2,7 @@
 
 import { API_ROUTES, APP_ROUTES } from '@/constants/routes';
 import { LoginInput, SignUpInput } from '@/lib/validations/auth.schema';
-import { useAuthStore } from '@/store';
+import { useAuthStore, useCourseStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
@@ -33,6 +33,9 @@ async function authRequest<T>(
 
 export const useAuth = () => {
 	const clearSession = useAuthStore(state => state.clearSession);
+	const clearLastVisitedCourse = useCourseStore(
+		state => state.clearLastVisitedCourse,
+	);
 	const router = useRouter();
 
 	const login = async (credentials: LoginInput) => {
@@ -51,6 +54,8 @@ export const useAuth = () => {
 			credentials,
 			'Signup failed',
 		);
+
+		clearLastVisitedCourse();
 
 		router.push(APP_ROUTES.HOME);
 	};

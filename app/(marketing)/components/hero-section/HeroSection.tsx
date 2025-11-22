@@ -1,4 +1,4 @@
-import HeroActions from '@/app/(marketing)/components/hero-section/HeroActions';
+import HeroActions from './HeroActions';
 
 export default function HeroSection() {
 	return (

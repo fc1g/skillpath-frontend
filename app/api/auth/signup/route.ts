@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 	}
 
 	const backendResponse = await httpRequest<{ accessToken: string }>({
-		path: '/auth/signup',
+		path: 'auth/signup',
 		method: 'POST',
 		body: {
 			email: parsedBody.data.email,

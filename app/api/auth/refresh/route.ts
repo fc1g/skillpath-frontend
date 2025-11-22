@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
 	const backendResponse = await httpRequest<{ accessToken: string }>({
-		path: '/auth/refresh',
+		path: 'auth/refresh',
 		method: 'POST',
 		cookies: request.headers.get('cookie') ?? undefined,
 	});

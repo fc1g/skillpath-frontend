@@ -7,7 +7,7 @@ export async function getUser(accessToken?: string) {
 	}
 
 	const backendResponse = await httpRequest<User>({
-		path: '/users/me',
+		path: 'users/me',
 		method: 'GET',
 		accessToken: accessToken,
 	});

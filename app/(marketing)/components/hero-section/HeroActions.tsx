@@ -1,18 +1,20 @@
 'use client';
 
 import { Button } from '@/components/ui';
-import { useHasHydratedCourse, useLastVisitedCourseId } from '@/store';
+import { useHasHydratedCourse, useLastVisitedCourse } from '@/store';
 import Link from 'next/link';
 
 export default function HeroActions() {
-	const lastVisitedCourseId = useLastVisitedCourseId();
+	const lastVisitedCourse = useLastVisitedCourse();
 	const hasHydratedCourse = useHasHydratedCourse();
 
 	return (
 		<div className="flex justify-center gap-4">
-			{hasHydratedCourse && lastVisitedCourseId && (
+			{hasHydratedCourse && lastVisitedCourse && (
 				<Button size="lg" variant="default" asChild>
-					<Link href={`/courses/${lastVisitedCourseId}`}>
+					<Link
+						href={`/courses/${lastVisitedCourse.id}/${lastVisitedCourse.slug}/learn`}
+					>
 						Continue Learning
 					</Link>
 				</Button>
@@ -20,9 +22,7 @@ export default function HeroActions() {
 
 			<Button
 				size="lg"
-				variant={
-					hasHydratedCourse && lastVisitedCourseId ? 'outline' : 'default'
-				}
+				variant={hasHydratedCourse && lastVisitedCourse ? 'outline' : 'default'}
 				asChild
 			>
 				<Link href="/courses">Browse Courses</Link>
