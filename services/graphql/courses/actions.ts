@@ -15,6 +15,9 @@ export const getCoursesStaticParams = async () =>
 	catchAllQuery<{ coursesStaticParams: CoursesStaticParams }>(
 		{
 			query: GET_COURSES_STATIC_PARAMS,
+			variables: {
+				coursesPaginationQueryInput: {},
+			},
 			fetchPolicy: 'no-cache',
 		},
 		client,

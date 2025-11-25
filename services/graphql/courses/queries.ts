@@ -31,8 +31,10 @@ export const GET_POPULAR_COURSES = gql`
 `;
 
 export const GET_COURSES_STATIC_PARAMS = gql`
-	query GetCoursesStaticParams {
-		courses {
+	query GetCoursesStaticParams(
+		$coursesPaginationQueryInput: CoursesPaginationQueryInput!
+	) {
+		courses(coursesPaginationQueryInput: $coursesPaginationQueryInput) {
 			id
 			slug
 		}
