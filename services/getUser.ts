@@ -1,5 +1,5 @@
-import { httpRequest } from '@/services/http/httpRequest';
-import { User } from '@/types';
+import { httpRequest } from '@/services/http';
+import { User } from '@/types/auth';
 
 export async function getUser(accessToken?: string) {
 	if (!accessToken) {

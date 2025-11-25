@@ -4,7 +4,7 @@ import { create } from 'zustand/react';
 type LastVisitedCourse = {
 	id: string;
 	slug: string;
-}
+};
 
 type State = {
 	lastVisitedCourse: LastVisitedCourse | null;
@@ -26,7 +26,7 @@ export const useCourseStore = create<State & Action>()(
 				hasHydratedCourse: false,
 
 				setLastVisitedCourse: lastVisitedCourse =>
-					set({ lastVisitedCourse: {...lastVisitedCourse} }),
+					set({ lastVisitedCourse: { ...lastVisitedCourse } }),
 				clearLastVisitedCourse: () => set({ lastVisitedCourse: null }),
 
 				markHydratedCourse: () => set({ hasHydratedCourse: true }),

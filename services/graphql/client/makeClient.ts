@@ -6,7 +6,7 @@ import { NEXT_PUBLIC_API_URL } from '@/config/env';
 
 export function makeClient() {
 	const httpLink = new HttpLink({
-		uri: `${NEXT_PUBLIC_API_URL}/graphql`,
+		uri: `${NEXT_PUBLIC_API_URL}/courses/graphql`,
 	});
 
 	return new ApolloClient({

@@ -2,9 +2,9 @@
 
 import { ReactNode } from 'react';
 import { ApolloNextAppProvider } from '@apollo/client-integration-nextjs';
-import { makeClient } from '@/services/graphql/makeClient';
+import { makeClient } from '@/services/graphql/client';
 
-export function ApolloProvider({
+export default function ApolloProvider({
 	children,
 }: Readonly<{ children: ReactNode }>) {
 	return (

@@ -1,3 +1,8 @@
+import {
+	generateMetadata,
+	generateStaticParams,
+} from '@/services/graphql/courses';
+
 type CourseOverviewPageParams = {
 	params: Promise<{
 		courseId: string;
@@ -5,13 +10,20 @@ type CourseOverviewPageParams = {
 	}>;
 };
 
-export default async function CourseOverviewPage({ params }: CourseOverviewPageParams) {
+export { generateMetadata, generateStaticParams };
+export const revalidate = 60;
+
+export default async function CourseOverviewPage({
+	params,
+}: CourseOverviewPageParams) {
 	const { courseId, slug } = await params;
 
-	return <div>
-		<h1>courseId: {courseId}</h1>
-		<h2>slug: {slug}</h2>
+	return (
+		<div>
+			<h1>courseId: {courseId}</h1>
+			<h2>slug: {slug}</h2>
 
-		<p>Overview</p>
-	</div>
+			<p>Overview</p>
+		</div>
+	);
 }

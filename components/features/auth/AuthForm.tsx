@@ -1,6 +1,5 @@
 'use client';
 
-import OAuthButton from '@/components/features/auth/OAuthButton';
 import {
 	Button,
 	Form,
@@ -16,13 +15,14 @@ import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/hooks';
 import {
 	LoginInput,
-	loginSchema,
 	SignUpInput,
+	loginSchema,
 	signUpSchema,
 } from '@/lib/validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useForm } from 'react-hook-form';
+import OAuthButton from './OAuthButton';
 
 type AuthFormProps = {
 	type: 'signup' | 'login';

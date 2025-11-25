@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { httpRequest } from '@/services/http/httpRequest';
+import { httpRequest } from '@/services/http';
 
 export async function POST(request: Request) {
 	const backendResponse = await httpRequest({

@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui';
+import { APP_ROUTES } from '@/constants/routes';
 import { useHasHydratedCourse, useLastVisitedCourse } from '@/store';
 import Link from 'next/link';
 
@@ -13,7 +14,7 @@ export default function HeroActions() {
 			{hasHydratedCourse && lastVisitedCourse && (
 				<Button size="lg" variant="default" asChild>
 					<Link
-						href={`/courses/${lastVisitedCourse.id}/${lastVisitedCourse.slug}/learn`}
+						href={`${APP_ROUTES.COURSES}/${lastVisitedCourse.id}/${lastVisitedCourse.slug}/learn`}
 					>
 						Continue Learning
 					</Link>
@@ -25,7 +26,7 @@ export default function HeroActions() {
 				variant={hasHydratedCourse && lastVisitedCourse ? 'outline' : 'default'}
 				asChild
 			>
-				<Link href="/courses">Browse Courses</Link>
+				<Link href={APP_ROUTES.COURSES}>Browse Courses</Link>
 			</Button>
 		</div>
 	);

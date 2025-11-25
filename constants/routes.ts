@@ -13,6 +13,3 @@ export const API_ROUTES = {
 		REFRESH: '/api/auth/refresh',
 	},
 } as const;
-
-export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
-export type ApiRoute = (typeof API_ROUTES)[keyof typeof API_ROUTES];

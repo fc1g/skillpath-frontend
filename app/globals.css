@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -131,15 +131,15 @@
 /* Spotlight effect */
 @layer components {
 	.spotlight-card {
-		@apply bg-card text-card-foreground relative rounded-md cursor-pointer;
+		@apply bg-card text-card-foreground relative cursor-pointer rounded-md;
 	}
 
 	.spotlight-card:active {
-		@apply shadow-2xl transition duration-300 shadow-secondary;
+		@apply shadow-secondary shadow-2xl transition duration-300;
 	}
 
 	.dark .spotlight-card:active {
-		@apply shadow-2xl transition duration-300 shadow-primary-foreground;
+		@apply shadow-primary-foreground shadow-2xl transition duration-300;
 	}
 
 	.spotlight-card:hover::before {
@@ -147,23 +147,23 @@
 	}
 
 	.spotlight-card::before {
-		@apply rounded-[inherit] content-[''] opacity-0 transition-opacity duration-500 transform h-full w-full left-0 top-0 absolute pointer-events-none;
+		@apply pointer-events-none absolute top-0 left-0 h-full w-full transform rounded-[inherit] opacity-0 transition-opacity duration-500 content-[''];
 	}
 
 	.dark .spotlight-card::before {
 		background: radial-gradient(
-				800px circle at var(--mouse-x) var(--mouse-y),
-				rgba(255, 255, 255, 0.06),
-				transparent 40%
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(255, 255, 255, 0.06),
+			transparent 40%
 		);
 		z-index: 3;
 	}
 
 	.spotlight-card::before {
 		background: radial-gradient(
-				800px circle at var(--mouse-x) var(--mouse-y),
-				rgba(0, 0, 0, 0.10),
-				transparent 40%
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(0, 0, 0, 0.1),
+			transparent 40%
 		);
 	}
 }

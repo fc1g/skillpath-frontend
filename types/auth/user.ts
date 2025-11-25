@@ -1,11 +1,10 @@
-import { RoleType } from '@/types/auth/role';
-import { ProviderType } from '@/types/auth/oauth-account';
+import { ProviderType, RoleType } from '@/types/auth';
+import { AbstractEntity } from '@/types/base';
 
 export type User = {
-	id: string;
 	email: string;
 	name: string | null;
 	roles: RoleType[];
 	providers: ProviderType[];
 	hasPassword: boolean;
-};
+} & AbstractEntity;

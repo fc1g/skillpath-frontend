@@ -1,7 +1,7 @@
 'use client';
 
 import { API_ROUTES, APP_ROUTES } from '@/constants/routes';
-import { LoginInput, SignUpInput } from '@/lib/validations/auth.schema';
+import { LoginInput, SignUpInput } from '@/lib/validations';
 import { useAuthStore, useCourseStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';

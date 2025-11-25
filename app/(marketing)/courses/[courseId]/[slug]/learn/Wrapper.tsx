@@ -3,7 +3,13 @@
 import { useCourseStore } from '@/store';
 import { useEffect } from 'react';
 
-export default function CourseLearnWrapper({ courseId, slug }: { courseId: string, slug: string }) {
+export default function CourseLearnWrapper({
+	courseId,
+	slug,
+}: {
+	courseId: string;
+	slug: string;
+}) {
 	const setLastVisitedCourse = useCourseStore(
 		state => state.setLastVisitedCourse,
 	);
@@ -18,7 +24,7 @@ export default function CourseLearnWrapper({ courseId, slug }: { courseId: strin
 			<h1>courseId: {courseId}</h1>
 			<h2>slug: {slug}</h2>
 
-			<p>Overview</p>
+			<p>Learn</p>
 		</div>
 	);
 }

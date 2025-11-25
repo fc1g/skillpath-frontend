@@ -9,6 +9,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui';
+import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/hooks';
 import { useIsAuthenticated, useUser } from '@/store';
 import Link from 'next/link';
@@ -45,10 +46,10 @@ export default function AccountMenu() {
 				{!isAuthenticated && (
 					<>
 						<DropdownMenuItem asChild>
-							<Link href="/login">Login</Link>
+							<Link href={APP_ROUTES.LOGIN}>Login</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link href="/signup">Signup</Link>
+							<Link href={APP_ROUTES.SIGNUP}>Signup</Link>
 						</DropdownMenuItem>
 					</>
 				)}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuthStore } from '@/store';
-import { User } from '@/types';
+import { User } from '@/types/auth';
 import { useEffect } from 'react';
 
 type AuthBootstrapProps = {

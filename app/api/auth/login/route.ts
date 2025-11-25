@@ -1,7 +1,7 @@
-import { LoginInput, loginSchema } from '@/lib/validations/auth.schema';
+import { LoginInput, loginSchema } from '@/lib/validations';
 import { NextResponse } from 'next/server';
-import { parseAndValidate } from '@/lib/api/parse-and-validate-body';
-import { httpRequest } from '@/services/http/httpRequest';
+import { parseAndValidate } from '@/services/utils';
+import { httpRequest } from '@/services/http';
 
 export async function POST(request: Request) {
 	const parsedBody = await parseAndValidate<LoginInput>(request, loginSchema);

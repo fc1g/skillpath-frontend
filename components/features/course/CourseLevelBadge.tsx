@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui';
+import { CourseLevel } from '@/types/courses';
 
-type CourseLevelBadgeProps = { level: string };
+type CourseLevelBadgeProps = { level: CourseLevel };
 
 export default function CourseLevelBadge({ level }: CourseLevelBadgeProps) {
 	return (
