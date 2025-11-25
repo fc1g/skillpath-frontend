@@ -12,7 +12,7 @@ import { catchAllQuery } from '@/services/utils';
 const client = getClient();
 
 export const getCoursesStaticParams = async () =>
-	catchAllQuery<{ coursesStaticParams: CoursesStaticParams }>(
+	catchAllQuery<{ courses: CoursesStaticParams }>(
 		{
 			query: GET_COURSES_STATIC_PARAMS,
 			variables: {
@@ -21,14 +21,14 @@ export const getCoursesStaticParams = async () =>
 			fetchPolicy: 'no-cache',
 		},
 		client,
-	).then(data => data.coursesStaticParams);
+	).then(data => data.courses);
 
 export const getCourseMetadata = async (id: string) =>
-	catchAllQuery<{ courseMetadata: CourseMetadata }>(
+	catchAllQuery<{ course: CourseMetadata }>(
 		{
 			query: GET_COURSE_METADATA,
 			variables: { id },
 			fetchPolicy: 'no-cache',
 		},
 		client,
-	).then(data => data.courseMetadata);
+	).then(data => data.course);
