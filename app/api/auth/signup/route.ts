@@ -2,6 +2,7 @@ import { httpRequest } from '@/services/http';
 import { NextResponse } from 'next/server';
 import { parseAndValidate } from '@/services/utils';
 import { SignUpInput, signUpSchema } from '@/lib/validations';
+import { createApiResponse } from '@/app/api/_helpers';
 
 export async function POST(request: Request) {
 	const parsedBody = await parseAndValidate<SignUpInput>(request, signUpSchema);
@@ -19,21 +20,5 @@ export async function POST(request: Request) {
 		},
 	});
 
-	if (!backendResponse.ok) {
-		return NextResponse.json(backendResponse.body, {
-			status: backendResponse.status,
-		});
-	}
-
-	const res = NextResponse.json(backendResponse.body, {
-		status: backendResponse.status,
-	});
-
-	if (backendResponse.setCookies) {
-		for (const cookie of backendResponse.setCookies) {
-			res.headers.append('set-cookie', cookie);
-		}
-	}
-
-	return res;
+	return createApiResponse(backendResponse);
 }

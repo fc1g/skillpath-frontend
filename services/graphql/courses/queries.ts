@@ -3,14 +3,21 @@ import { gql } from '@apollo/client';
 export const GET_COURSES = gql`
 	query GetCourses($coursesPaginationQueryInput: CoursesPaginationQueryInput!) {
 		courses(coursesPaginationQueryInput: $coursesPaginationQueryInput) {
-			id
-			title
-			subtitle
-			slug
-			level
-			averageRating
-			studentsCount
-			durationHours
+			items {
+				id
+				title
+				subtitle
+				slug
+				level
+				averageRating
+				studentsCount
+				durationHours
+				tags {
+					id
+					name
+				}
+			}
+			total
 		}
 	}
 `;
@@ -35,8 +42,10 @@ export const GET_COURSES_STATIC_PARAMS = gql`
 		$coursesPaginationQueryInput: CoursesPaginationQueryInput!
 	) {
 		courses(coursesPaginationQueryInput: $coursesPaginationQueryInput) {
-			id
-			slug
+			items {
+				id
+				slug
+			}
 		}
 	}
 `;
@@ -52,6 +61,34 @@ export const GET_COURSE_METADATA = gql`
 			}
 			categories {
 				name
+			}
+		}
+	}
+`;
+
+export const GET_COURSE = gql`
+	query GetCourse($id: ID!) {
+		course(id: $id) {
+			title
+			subtitle
+			description
+			requirements
+			learningOutcomes
+			includedFeatures
+			level
+			averageRating
+			ratingsCount
+			studentsCount
+			lessonsCount
+			challengesCount
+			durationHours
+			tags {
+				name
+				slug
+			}
+			categories {
+				name
+				slug
 			}
 		}
 	}

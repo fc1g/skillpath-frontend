@@ -1,3 +1,3 @@
-export { default as ApolloProvider } from './apollo-provider';
-export { default as ThemeProvider } from './theme-provider';
-export { default as AuthBootstrap } from './auth-bootstrap';
+export { default as ApolloProvider } from './ApolloProvider';
+export { default as ThemeProvider } from './ThemeProvider';
+export { default as AuthBootstrap } from './AuthBootstrap';

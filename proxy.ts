@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { APP_ROUTES } from '@/constants/routes';
 
 export default function proxy(request: NextRequest) {
 	const refreshToken = request.cookies.get('refreshToken')?.value;
 
 	if (!refreshToken) {
-		return NextResponse.redirect(new URL('/login', request.url));
+		return NextResponse.redirect(new URL(APP_ROUTES.SIGNUP, request.url));
 	}
 
 	return NextResponse.next();

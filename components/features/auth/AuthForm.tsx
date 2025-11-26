@@ -15,13 +15,13 @@ import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/hooks';
 import {
 	LoginInput,
-	SignUpInput,
 	loginSchema,
+	SignUpInput,
 	signUpSchema,
-} from '@/lib/validations/auth.schema';
+} from '@/lib/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { UseFormReturn, useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import OAuthButton from './OAuthButton';
 
 type AuthFormProps = {
@@ -151,14 +151,13 @@ export default function AuthForm({ type }: AuthFormProps) {
 					</div>
 				)}
 
-				{/* TODO: */}
-				{/*{!isSignup && (*/}
-				{/*	<div className="flex items-center justify-end">*/}
-				{/*		<Button variant="link" type="button" asChild>*/}
-				{/*			<Link href="/">Reset password</Link>*/}
-				{/*		</Button>*/}
-				{/*	</div>*/}
-				{/*)}*/}
+				{!isSignup && (
+					<div className="flex items-center justify-end">
+						<Button variant="link" type="button" asChild>
+							<Link href={APP_ROUTES.RESET_PASSWORD}>Reset password</Link>
+						</Button>
+					</div>
+				)}
 
 				<div className="flex flex-col justify-center gap-4">
 					<div className="flex flex-col items-center space-y-1">

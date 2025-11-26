@@ -5,18 +5,16 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/hooks';
-import { useIsAuthenticated, useUser } from '@/store';
+import { useIsAuthenticated } from '@/store';
 import Link from 'next/link';
 
 export default function AccountMenu() {
 	const isAuthenticated = useIsAuthenticated();
-	const user = useUser();
 
 	const { logout } = useAuth();
 
@@ -35,7 +33,15 @@ export default function AccountMenu() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuLabel>{user?.name ?? user?.email}</DropdownMenuLabel>
+				<DropdownMenuItem asChild>
+					<Link href={APP_ROUTES.MY_COURSES}>My Courses</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem asChild>
+					<Link href={APP_ROUTES.PROFILE}>Profile</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem asChild>
+					<Link href={APP_ROUTES.AI_ASSISTANT}>Ai Assistant</Link>
+				</DropdownMenuItem>
 
 				<DropdownMenuSeparator />
 

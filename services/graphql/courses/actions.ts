@@ -12,7 +12,7 @@ import { catchAllQuery } from '@/services/utils';
 const client = getClient();
 
 export const getCoursesStaticParams = async () =>
-	catchAllQuery<{ courses: CoursesStaticParams }>(
+	catchAllQuery<{ courses: { items: CoursesStaticParams } }>(
 		{
 			query: GET_COURSES_STATIC_PARAMS,
 			variables: {
@@ -21,7 +21,7 @@ export const getCoursesStaticParams = async () =>
 			fetchPolicy: 'no-cache',
 		},
 		client,
-	).then(data => data.courses);
+	).then(data => data.courses.items);
 
 export const getCourseMetadata = async (id: string) =>
 	catchAllQuery<{ course: CourseMetadata }>(

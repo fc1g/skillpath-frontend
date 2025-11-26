@@ -1,2 +1,2 @@
-export * from './parse-and-validate-body';
-export * from './catch-all-query';
+export * from './validateBody';
+export * from './catchAllQuery';

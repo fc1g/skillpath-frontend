@@ -1,5 +1,5 @@
-import { HttpRequestOptions, HttpResponse } from '@/services/http/http.types';
-import { buildResponseHeaders } from '@/services/http/http.utils';
+import { HttpRequestOptions, HttpResponse } from './types';
+import { buildResponseHeaders } from './utils';
 import { INTERNAL_API_URL } from '@/config/env';
 
 export async function httpRequest<T>({

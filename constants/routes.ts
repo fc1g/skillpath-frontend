@@ -1,8 +1,12 @@
 export const APP_ROUTES = {
 	HOME: '/',
 	COURSES: '/courses',
-	LOGIN: '/login',
-	SIGNUP: '/signup',
+	LOGIN: '/auth/login',
+	SIGNUP: '/auth/signup',
+	RESET_PASSWORD: '/auth/reset-password',
+	MY_COURSES: '/dashboard/courses',
+	PROFILE: '/dashboard/profile',
+	AI_ASSISTANT: '/dashboard/assistant',
 } as const;
 
 export const API_ROUTES = {

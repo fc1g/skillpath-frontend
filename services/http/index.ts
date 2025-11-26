@@ -1,3 +1,3 @@
-export * from './http.types';
-export * from './http.utils';
+export * from './types';
+export * from './utils';
 export * from './httpRequest';

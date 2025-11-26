@@ -1,5 +1,6 @@
 import {
 	CoursesPaginationQueryInput,
+	GET_COURSE,
 	GET_COURSES,
 	GET_POPULAR_COURSES,
 	PaginationQueryInput,
@@ -7,16 +8,24 @@ import {
 import { Course } from '@/types/courses';
 import { useSuspenseQuery } from '@apollo/client/react';
 
+type CoursesWithTotal = {
+	courses: {
+		items: Course[];
+		total: number;
+	};
+};
+
 export const useCourses = ({
 	limit,
 	offset,
 	category,
 	level,
 	search,
-}: CoursesPaginationQueryInput): Course[] => {
-	const { data } = useSuspenseQuery<{
-		courses: Course[];
-	}>(GET_COURSES, {
+}: CoursesPaginationQueryInput): {
+	items: Course[];
+	total: number;
+} => {
+	const { data } = useSuspenseQuery<CoursesWithTotal>(GET_COURSES, {
 		variables: {
 			coursesPaginationQueryInput: {
 				limit,
@@ -48,4 +57,15 @@ export const usePopularCourses = (
 	});
 
 	return data.popularCourses;
+};
+
+export const useCourse = (id: string): Course => {
+	const { data } = useSuspenseQuery<{ course: Course }>(GET_COURSE, {
+		variables: {
+			id,
+		},
+		fetchPolicy: 'cache-and-network',
+	});
+
+	return data.course;
 };

@@ -17,6 +17,7 @@ export type Course = {
 	includedFeatures: string[];
 	level: keyof typeof CourseLevel;
 	averageRating: number;
+	ratingsCount: number;
 	studentsCount: number;
 	lessonsCount: number;
 	challengesCount: number;

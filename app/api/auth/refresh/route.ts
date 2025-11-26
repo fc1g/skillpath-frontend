@@ -1,5 +1,5 @@
 import { httpRequest } from '@/services/http';
-import { NextResponse } from 'next/server';
+import { createApiResponse } from '@/app/api/_helpers';
 
 export async function POST(request: Request) {
 	const backendResponse = await httpRequest<{ accessToken: string }>({
@@ -8,21 +8,5 @@ export async function POST(request: Request) {
 		cookies: request.headers.get('cookie') ?? undefined,
 	});
 
-	if (!backendResponse.ok) {
-		return NextResponse.json(backendResponse.body, {
-			status: backendResponse.status,
-		});
-	}
-
-	const res = NextResponse.json(backendResponse.body, {
-		status: backendResponse.status,
-	});
-
-	if (backendResponse.setCookies) {
-		for (const cookie of backendResponse.setCookies) {
-			res.headers.append('Set-Cookie', cookie);
-		}
-	}
-
-	return res;
+	return createApiResponse(backendResponse);
 }

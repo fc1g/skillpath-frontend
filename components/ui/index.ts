@@ -10,3 +10,5 @@ export * from './badge';
 export * from './skeleton';
 export * from './breadcrumb';
 export * from './dialog';
+export * from './pagination';
+export * from './tabs';
