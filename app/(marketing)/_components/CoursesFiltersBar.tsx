@@ -1,6 +1,6 @@
-import { CoursesFilterChip, CoursesFilterGroup } from '@/components/features';
 import { CourseLevel } from '@/types/courses';
-import { nanoid } from 'nanoid';
+import CoursesFilterChip from './CoursesFilterChip';
+import CoursesFilterGroup from './CoursesFilterGroup';
 
 const categories = [
 	'All',
@@ -22,11 +22,11 @@ export default function CoursesFiltersBar() {
 			<div className="space-y-2">
 				<CoursesFilterGroup label="Category" />
 				<div className="flex flex-wrap gap-2">
-					{categories.map(category => (
+					{categories.map(label => (
 						<CoursesFilterChip
-							key={nanoid(6)}
-							label={category}
-							fieldKey="category"
+							key={`${label}-category`}
+							label={label}
+							param="category"
 						/>
 					))}
 				</div>
@@ -34,8 +34,12 @@ export default function CoursesFiltersBar() {
 			<div className="space-y-2">
 				<CoursesFilterGroup label="Level" />
 				<div className="flex flex-wrap gap-2">
-					{levels.map(level => (
-						<CoursesFilterChip key={nanoid(6)} label={level} fieldKey="level" />
+					{levels.map(label => (
+						<CoursesFilterChip
+							key={`${label}-level`}
+							label={label}
+							param="level"
+						/>
 					))}
 				</div>
 			</div>

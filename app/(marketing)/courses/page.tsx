@@ -1,10 +1,9 @@
-import { CoursesSearchBar } from '@/app/(marketing)/_components';
-import { CustomErrorBoundary, HeroSection } from '@/components/common';
 import {
 	CoursesFiltersBar,
-	CoursesList,
-	CoursesListSkeleton,
-} from '@/components/features';
+	CoursesSearchBar,
+} from '@/app/(marketing)/_components';
+import { CustomErrorBoundary, HeroSection } from '@/components/common';
+import { CoursesList, CoursesListSkeleton } from '@/components/features';
 import { Separator } from '@/components/ui';
 import { buildCoursesPaginationQueryInput } from '@/lib/courses';
 import { PreloadQuery } from '@/services/graphql/client';

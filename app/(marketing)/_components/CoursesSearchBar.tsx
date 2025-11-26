@@ -1,10 +1,10 @@
 'use client';
 
-import { SearchBar } from '@/components/common';
 import { APP_ROUTES } from '@/constants/routes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import SearchBar from './SearchBar';
 
 export default function CoursesSearchBar() {
 	const router = useRouter();

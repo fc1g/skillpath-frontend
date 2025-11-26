@@ -1,9 +1,9 @@
 'use client';
 
-import { SearchBar } from '@/components/common';
 import { APP_ROUTES } from '@/constants/routes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import SearchBar from './SearchBar';
 
 export default function HomeSearchBar() {
 	const [query, setQuery] = useState('');
