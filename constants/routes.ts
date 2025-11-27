@@ -15,5 +15,6 @@ export const API_ROUTES = {
 		SIGNUP: '/api/auth/signup',
 		LOGOUT: '/api/auth/logout',
 		REFRESH: '/api/auth/refresh',
+		ME: '/api/auth/me',
 	},
 } as const;

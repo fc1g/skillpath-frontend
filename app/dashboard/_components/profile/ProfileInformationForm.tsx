@@ -1,9 +1,9 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { ResetPasswordInput, resetPasswordSchema } from '@/lib/validations';
+import { ProfileInput, profileSchema } from '@/lib/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import { useUser } from '@/store';
 import {
 	Button,
 	Form,
@@ -14,16 +14,20 @@ import {
 	FormMessage,
 	Input,
 } from '@/components/ui';
+import { toast } from 'sonner';
 
-export default function ResetPasswordPage() {
-	const form = useForm<ResetPasswordInput>({
-		resolver: zodResolver(resetPasswordSchema),
+export default function ProfileInformationForm() {
+	const user = useUser();
+
+	const form = useForm<ProfileInput>({
+		resolver: zodResolver(profileSchema),
 		defaultValues: {
-			email: '',
+			username: user?.name ?? '',
+			email: user?.email ?? '',
 		},
 	});
 
-	async function onSubmit(data: ResetPasswordInput) {
+	async function onSubmit(data: ProfileInput) {
 		toast.info("Doesn't work yet, sorry!");
 	}
 
@@ -31,8 +35,32 @@ export default function ResetPasswordPage() {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full max-w-xs space-y-3 rounded-lg border-2 p-2 sm:max-w-md sm:space-y-6 sm:p-4"
+				className="w-full space-y-3 rounded-lg border-2 p-2 sm:space-y-6 sm:p-4"
 			>
+				<FormField
+					control={form.control}
+					name="username"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Full Name</FormLabel>
+							<FormControl>
+								<Input
+									placeholder="John Doe"
+									autoComplete="username"
+									type="text"
+									aria-invalid={!!form.formState.errors.username}
+									{...field}
+								/>
+							</FormControl>
+							{form.formState.errors.username && (
+								<FormMessage role="alert" aria-live="polite">
+									{form.formState.errors.username?.message ?? ''}
+								</FormMessage>
+							)}
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name="email"
@@ -71,7 +99,7 @@ export default function ResetPasswordPage() {
 					type="submit"
 					disabled={form.formState.isSubmitting}
 				>
-					{form.formState.isSubmitting ? 'Loading...' : 'Send Reset Link'}
+					{form.formState.isSubmitting ? 'Loading...' : 'Save Changes'}
 				</Button>
 			</form>
 		</Form>

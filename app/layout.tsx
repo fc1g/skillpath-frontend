@@ -1,7 +1,9 @@
-import { ThemeProvider } from '@/app/providers';
+import { ApolloProvider, ThemeProvider } from '@/app/providers';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { Footer, Header } from '@/components/features';
+import { Toaster } from '@/components/ui';
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -22,7 +24,18 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					{children}
+					<>
+						<ApolloProvider>
+							<div className="wrapper">
+								<Header />
+
+								<main className="flex-auto">{children}</main>
+
+								<Footer />
+							</div>
+						</ApolloProvider>
+						<Toaster />
+					</>
 				</ThemeProvider>
 			</body>
 		</html>

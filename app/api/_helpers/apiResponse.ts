@@ -8,10 +8,6 @@ export function createApiResponse<T>(
 
 	if (backendResponse.status === 204) {
 		res = new NextResponse(null, { status: 204 });
-	} else if (backendResponse.ok) {
-		res = NextResponse.json(backendResponse.body, {
-			status: backendResponse.status,
-		});
 	} else {
 		res = NextResponse.json(backendResponse.body, {
 			status: backendResponse.status,

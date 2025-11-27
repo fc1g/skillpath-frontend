@@ -22,5 +22,12 @@ export const signUpSchema = baseAuthSchema
 		path: ['passwordConfirm'],
 	});
 
+export const resetPasswordSchema = z.object({
+	email: z.email({
+		message: 'Please provide a valid email address',
+	}),
+});
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignUpInput = z.infer<typeof signUpSchema>;

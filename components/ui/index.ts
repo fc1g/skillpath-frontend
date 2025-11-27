@@ -12,3 +12,7 @@ export * from './breadcrumb';
 export * from './dialog';
 export * from './pagination';
 export * from './tabs';
+export * from './sonner';
+export * from './sheet';
+export * from './tooltip';
+export * from './sidebar';

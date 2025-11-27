@@ -10,11 +10,12 @@ import {
 } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/hooks';
-import { useIsAuthenticated } from '@/store';
+import { useHasAuthHydrated, useIsAuthenticated } from '@/store';
 import Link from 'next/link';
 
 export default function AccountMenu() {
 	const isAuthenticated = useIsAuthenticated();
+	const hasAuthHydrated = useHasAuthHydrated();
 
 	const { logout } = useAuth();
 
@@ -45,11 +46,11 @@ export default function AccountMenu() {
 
 				<DropdownMenuSeparator />
 
-				{isAuthenticated && (
+				{hasAuthHydrated && isAuthenticated && (
 					<DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
 				)}
 
-				{!isAuthenticated && (
+				{hasAuthHydrated && !isAuthenticated && (
 					<>
 						<DropdownMenuItem asChild>
 							<Link href={APP_ROUTES.LOGIN}>Login</Link>

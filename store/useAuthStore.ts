@@ -1,6 +1,6 @@
-import { User } from '@/types/auth';
+import type { User } from '@/types/auth/user';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import { create } from 'zustand/react';
+import { create } from 'zustand';
 
 type State = {
 	user: User | null;
@@ -9,11 +9,8 @@ type State = {
 
 type Action = {
 	setUser: (user: User) => void;
-	updateUser: (
-		patch: Partial<Omit<User, 'id' | 'updatedAt' | 'createdAt'>>,
-	) => void;
+	updateUser: (patch: Partial<User>) => void;
 	clearSession: () => void;
-
 	markHydratedAuth: () => void;
 };
 
@@ -29,6 +26,7 @@ export const useAuthStore = create<State & Action>()(
 					set(state =>
 						state.user ? { user: { ...state.user, ...patch } } : state,
 					),
+
 				clearSession: () => set({ user: null }),
 
 				markHydratedAuth: () => set({ hasHydratedAuth: true }),
@@ -46,5 +44,5 @@ export const useAuthStore = create<State & Action>()(
 
 export const useUser = () => useAuthStore(state => state.user);
 export const useIsAuthenticated = () => useAuthStore(state => !!state.user);
-export const useHasHydrated = () =>
+export const useHasAuthHydrated = () =>
 	useAuthStore(state => state.hasHydratedAuth);

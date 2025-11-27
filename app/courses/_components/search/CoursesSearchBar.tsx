@@ -4,7 +4,7 @@ import { APP_ROUTES } from '@/constants/routes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { SearchBar } from '@/app/(app)/(marketing)/_components';
+import { SearchBar } from '@/components/common';
 
 export default function CoursesSearchBar() {
 	const router = useRouter();

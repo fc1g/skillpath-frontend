@@ -1,9 +1,10 @@
+import { HeroSection, SearchBarSkeleton } from '@/components/common';
+import { Suspense } from 'react';
 import {
 	HeroActions,
 	HomeSearchBar,
 	PopularCoursesSection,
-} from './(marketing)/_components';
-import { HeroSection } from '@/components/common';
+} from './_components';
 
 export default function Home() {
 	return (
@@ -16,7 +17,9 @@ export default function Home() {
 				<HeroActions />
 			</HeroSection>
 
-			<HomeSearchBar />
+			<Suspense fallback={<SearchBarSkeleton />}>
+				<HomeSearchBar />
+			</Suspense>
 
 			<PopularCoursesSection />
 		</>

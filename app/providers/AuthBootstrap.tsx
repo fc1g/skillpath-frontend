@@ -1,25 +1,19 @@
 'use client';
 
-import { useAuthStore } from '@/store';
-import { User } from '@/types/auth';
+import { useAuth } from '@/hooks';
 import { useEffect } from 'react';
+import { useUser } from '@/store';
 
-type AuthBootstrapProps = {
-	user: User | null;
-};
-
-export default function AuthBootstrap({ user }: AuthBootstrapProps) {
-	const setUser = useAuthStore(state => state.setUser);
-	const clearSession = useAuthStore(state => state.clearSession);
+export default function AuthBootstrap() {
+	const { getMe } = useAuth();
+	const user = useUser();
 
 	useEffect(() => {
-		if (user) {
-			setUser(user);
-		} else {
-			clearSession();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		if (user) return;
+		(async () => {
+			await getMe();
+		})();
+	}, [getMe, user]);
 
 	return null;
 }

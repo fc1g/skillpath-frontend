@@ -5,6 +5,7 @@ import { LoginInput, SignUpInput } from '@/lib/validations';
 import { useAuthStore, useCourseStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { User } from '@/types/auth';
 
 async function authRequest<T>(
 	url: string,
@@ -19,6 +20,9 @@ async function authRequest<T>(
 		body: JSON.stringify(payload),
 		credentials: 'include',
 	});
+	if (res.status === 401) {
+		return res;
+	}
 
 	if (res.status === 204) {
 		if (!res.ok) throw new Error(fallbackErrorMessage);
@@ -32,6 +36,7 @@ async function authRequest<T>(
 }
 
 export const useAuth = () => {
+	const setUser = useAuthStore(state => state.setUser);
 	const clearSession = useAuthStore(state => state.clearSession);
 	const clearLastVisitedCourse = useCourseStore(
 		state => state.clearLastVisitedCourse,
@@ -63,15 +68,20 @@ export const useAuth = () => {
 	const logout = async () => {
 		await authRequest(API_ROUTES.AUTH.LOGOUT, undefined, 'Logout failed');
 		clearSession();
+		clearLastVisitedCourse();
 		router.push(APP_ROUTES.LOGIN);
 	};
 
 	const refresh = async () => {
-		await authRequest(
+		const res = await authRequest(
 			API_ROUTES.AUTH.REFRESH,
 			undefined,
 			'Failed to rotate tokens',
 		);
+		if (!res.ok && res.status === 401) {
+			await logout();
+			router.push(APP_ROUTES.LOGIN);
+		}
 
 		router.push(APP_ROUTES.HOME);
 	};
@@ -80,11 +90,30 @@ export const useAuth = () => {
 		window.location.href = `/api/v1/oauth/${provider}`;
 	}, []);
 
+	const getMe = async () => {
+		const request = async () =>
+			fetch(API_ROUTES.AUTH.ME, {
+				method: 'GET',
+				credentials: 'include',
+			});
+
+		let res = await request();
+
+		if (!res?.ok && res.status === 401) {
+			await refresh();
+			res = await request();
+		}
+
+		const user = (await res.json()) as User;
+		setUser(user);
+	};
+
 	return {
 		login,
 		signup,
 		logout,
 		refresh,
 		startOauth,
+		getMe,
 	};
 };

@@ -3,7 +3,7 @@
 import { APP_ROUTES } from '@/constants/routes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import SearchBar from './SearchBar';
+import { SearchBar } from '@/components/common';
 
 export default function HomeSearchBar() {
 	const [query, setQuery] = useState('');
