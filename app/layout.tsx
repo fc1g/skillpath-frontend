@@ -1,4 +1,4 @@
-import { ApolloProvider, ThemeProvider } from '@/app/providers';
+import { ApolloProvider, ThemeProvider } from './providers';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';

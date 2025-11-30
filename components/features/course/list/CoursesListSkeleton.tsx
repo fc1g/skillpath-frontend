@@ -1,4 +1,4 @@
-import { CourseCardSkeleton } from '@/components/features';
+import CourseCardSkeleton from '../card/CourseCardSkeleton';
 import { nanoid } from 'nanoid';
 import {
 	Pagination,

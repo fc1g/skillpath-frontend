@@ -1,9 +1,16 @@
 'use client';
 
-import { EmptyList } from '@/components/common';
 import { useCourses } from '@/hooks/useCourses';
 import { CourseLevel } from '@/types/courses';
-import { CourseCard, CoursePagination } from '@/components/features';
+import CourseCard from '../card/CourseCard';
+import CoursePagination from '../pagination/CoursePagination';
+import {
+	Empty,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui';
 
 type CoursesListProps = {
 	limit: number;
@@ -29,7 +36,19 @@ export default function CoursesList({
 	});
 
 	if (!Array.isArray(items) || !items.length)
-		return <EmptyList message="No courses found" />;
+		return (
+			<Empty>
+				<EmptyHeader>
+					<EmptyMedia variant="icon">
+						<svg className="size-6">
+							<use href="/icons/sprite.svg#course" />
+						</svg>
+					</EmptyMedia>
+					<EmptyTitle>No courses found</EmptyTitle>
+					<EmptyDescription>Try changing your filters</EmptyDescription>
+				</EmptyHeader>
+			</Empty>
+		);
 
 	return (
 		<>

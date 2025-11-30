@@ -1,6 +1,6 @@
 import { CourseLevelBadge, CourseTags } from '@/components/features';
 import { CourseLevel, Tag } from '@/types/courses';
-import { COURSE_OVERVIEW_PAGE_TAG_LIMIT } from '@/services/graphql/courses';
+import { COURSE_OVERVIEW_PAGE_TAG_LIMIT } from '@/lib/courses';
 
 type CourseOverviewHeaderProps = {
 	level: keyof typeof CourseLevel;

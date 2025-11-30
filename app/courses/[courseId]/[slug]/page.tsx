@@ -1,15 +1,7 @@
-import {
-	generateMetadata,
-	generateStaticParams,
-	GET_COURSE,
-} from '@/services/graphql/courses';
-import { PreloadQuery } from '@/services/graphql/client';
-import { ErrorBoundary } from '@/components/common';
-import { Suspense } from 'react';
-import {
-	CourseOverviewContent,
-	CourseOverviewSkeleton,
-} from './_components';
+import { generateMetadata, generateStaticParams } from '@/lib/courses';
+import { getCourse } from '@/services/graphql/courses';
+import { CourseOverviewContent } from './_components';
+import { notFound } from 'next/navigation';
 
 type CourseOverviewPageParams = {
 	params: Promise<{
@@ -25,16 +17,12 @@ export default async function CourseOverviewPage({
 	params,
 }: CourseOverviewPageParams) {
 	const { courseId, slug } = await params;
+	const course = await getCourse(courseId);
+	if (!course) return notFound();
 
 	return (
 		<div className="container mx-auto px-4 py-12">
-			<PreloadQuery query={GET_COURSE} variables={{ id: courseId }}>
-				<ErrorBoundary>
-					<Suspense fallback={<CourseOverviewSkeleton />}>
-						<CourseOverviewContent id={courseId} slug={slug} />
-					</Suspense>
-				</ErrorBoundary>
-			</PreloadQuery>
+			<CourseOverviewContent course={{ ...course, id: courseId, slug }} />
 		</div>
 	);
 }

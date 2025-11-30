@@ -5,10 +5,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui';
-import {
-	ProfileChangePassword,
-	ProfileInformationForm,
-} from '@/app/dashboard/_components';
+import { ProfileChangePassword, ProfileInformationForm } from './_components';
 
 export default function ProfilePage() {
 	return (

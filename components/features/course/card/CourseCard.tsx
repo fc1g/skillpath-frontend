@@ -1,23 +1,14 @@
 'use client';
 
-import {
-	CourseContent,
-	CourseLevelBadge,
-	CourseMetaItem,
-	CourseTags,
-} from '@/components/features';
-import {
-	Card,
-	CardAction,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-} from '@/components/ui';
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
 import { useSpotlightEffect } from '@/hooks/useSpotlightEffect';
 import { Course, CourseLevel } from '@/types/courses';
 import Link from 'next/link';
+import CourseContent from '../content/CourseContent';
+import CourseLevelBadge from './CourseLevelBadge';
+import CourseMetaItem from './CourseMetaItem';
+import CourseTags from './CourseTags';
 
 type CourseCardProps = {
 	data: Course;

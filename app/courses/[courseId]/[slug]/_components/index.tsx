@@ -1,2 +1,1 @@
-// Course overview components
-export { CourseOverviewContent, CourseOverviewSkeleton } from './course-overview';
+export { CourseOverviewContent } from './course-overview';

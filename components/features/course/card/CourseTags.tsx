@@ -1,6 +1,6 @@
 import { Tag } from '@/types/courses';
 import { Badge } from '@/components/ui';
-import { COURSE_CARD_TAG_LIMIT } from '@/services/graphql/courses';
+import { COURSE_CARD_TAG_LIMIT } from '@/lib/courses';
 
 type CourseTagsProps = {
 	data: Tag[];

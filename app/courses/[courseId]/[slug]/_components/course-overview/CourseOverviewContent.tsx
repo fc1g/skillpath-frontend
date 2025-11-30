@@ -1,24 +1,20 @@
 'use client';
 
-import { useCourse } from '@/hooks/useCourses';
 import CourseOverviewHeader from './CourseOverviewHeader';
 import CourseOverviewStats from './CourseOverviewStats';
 import CourseLearningOutcomes from './CourseLearningOutcomes';
 import CourseRequirements from './CourseRequirements';
 import CourseDescription from './CourseDescription';
 import CourseEnrollmentCard from './CourseEnrollmentCard';
+import { Course } from '@/types/courses';
 
 type CourseOverviewContentProps = {
-	id: string;
-	slug: string;
+	course: Course;
 };
 
 export default function CourseOverviewContent({
-	id,
-	slug,
+	course,
 }: CourseOverviewContentProps) {
-	const course = useCourse(id);
-
 	return (
 		<div className="grid gap-8 lg:grid-cols-3">
 			<div className="space-y-8 lg:col-span-2">
@@ -44,8 +40,8 @@ export default function CourseOverviewContent({
 			</div>
 
 			<CourseEnrollmentCard
-				courseId={id}
-				courseSlug={slug}
+				courseId={course.id}
+				courseSlug={course.slug}
 				includedFeatures={course.includedFeatures}
 			/>
 		</div>

@@ -1,5 +1,5 @@
+import { AuthBootstrap } from '../providers';
 import type { ReactNode } from 'react';
-import { AuthBootstrap } from '@/app/providers';
 import { DashboardTabs } from './_components';
 
 type DashboardLayoutProps = {

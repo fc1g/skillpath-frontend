@@ -32,16 +32,15 @@ export default function CourseEnrollmentCard({
 					</CardDescription>
 
 					<Button className="cursor-pointer" variant="ghost" asChild>
-						<div className="flex items-center justify-center gap-2">
+						<Link
+							className="flex items-center justify-center gap-2"
+							href={`${APP_ROUTES.COURSES}/${courseId}/${courseSlug}/learn`}
+						>
 							<svg className="size-5">
 								<use href="/icons/sprite.svg#play" />
 							</svg>
-							<Link
-								href={`${APP_ROUTES.COURSES}/${courseId}/${courseSlug}/learn`}
-							>
-								Start Course
-							</Link>
-						</div>
+							<span>Start Course</span>
+						</Link>
 					</Button>
 				</CardHeader>
 				<CardContent className="space-y-3">
