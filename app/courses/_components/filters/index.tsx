@@ -1,1 +1,1 @@
-export { default as CoursesFiltersBar } from './CoursesFiltersBar';
+export { default as FiltersBar } from './FiltersBar';

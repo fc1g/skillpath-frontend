@@ -11,7 +11,7 @@ export const GET_COURSES = gql`
 				level
 				averageRating
 				studentsCount
-				durationHours
+				durationSeconds
 				tags {
 					id
 					name
@@ -32,7 +32,7 @@ export const GET_POPULAR_COURSES = gql`
 			level
 			averageRating
 			studentsCount
-			durationHours
+			durationSeconds
 		}
 	}
 `;
@@ -81,7 +81,7 @@ export const GET_COURSE = gql`
 			studentsCount
 			lessonsCount
 			challengesCount
-			durationHours
+			durationSeconds
 			tags {
 				name
 				slug
@@ -89,6 +89,55 @@ export const GET_COURSE = gql`
 			categories {
 				name
 				slug
+			}
+			sections {
+				id
+				title
+				order
+				lessons {
+					id
+					title
+					order
+					content
+				}
+				challenges {
+					id
+					title
+					instructions
+					requirements
+					example
+					difficulty
+					order
+					expectedOutput
+					expectedStructure
+				}
+			}
+		}
+	}
+`;
+
+export const GET_COURSE_USER_RATING_AND_PROGRESS = gql`
+	query GetCourseUserRatingAndProgress(
+		$courseUserRatingAndProgressInput: CourseUserRatingAndProgressInput!
+	) {
+		courseUserRatingAndProgress(
+			courseUserRatingAndProgressInput: $courseUserRatingAndProgressInput
+		) {
+			rating
+			review
+			progress {
+				status
+				completedLessonsCount
+				completedChallengesCount
+				userId
+				courseId
+				lastVisitedItemId
+				lessonsProgresses {
+					status
+					lessonId
+				}
+				lastAccessedAt
+				completedAt
 			}
 		}
 	}

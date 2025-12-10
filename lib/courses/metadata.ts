@@ -20,12 +20,11 @@ export async function generateMetadata({ params }: GenerateMetadataProps) {
 	const { courseId, slug } = await params;
 	const metadata = await getCourseMetadata(courseId);
 
-	if (!metadata) {
+	if (!metadata)
 		return {
 			title: 'Course not found | SkillPath',
 			description: 'This course does not exist or has been removed.',
 		};
-	}
 
 	const title = `${metadata.title} - ${COURSE_LEVEL_LABEL[metadata.level]} course`;
 	const url = `${NEXT_PUBLIC_SITE_URL}${APP_ROUTES.COURSES}/${courseId}/${slug}`;
@@ -50,7 +49,12 @@ export async function generateMetadata({ params }: GenerateMetadataProps) {
 			siteName: 'SkillPath',
 			url,
 			locale: 'en_US',
-			type: 'website',
+			type: 'article',
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title,
+			description: metadata.subtitle,
 		},
 	};
 }

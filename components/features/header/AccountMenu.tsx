@@ -35,10 +35,10 @@ export default function AccountMenu() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuItem asChild>
-					<Link href={APP_ROUTES.MY_COURSES}>My Courses</Link>
+					<Link href={APP_ROUTES.PROFILE}>Profile</Link>
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild>
-					<Link href={APP_ROUTES.PROFILE}>Profile</Link>
+					<Link href={APP_ROUTES.MY_COURSES}>My Courses</Link>
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild>
 					<Link href={APP_ROUTES.AI_ASSISTANT}>Ai Assistant</Link>

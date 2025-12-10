@@ -1,5 +1,2 @@
-// Search components
-export { CoursesSearchBar } from './search';
-
-// Filters components
-export { CoursesFiltersBar } from './filters';
+export * from './search';
+export * from './filters';

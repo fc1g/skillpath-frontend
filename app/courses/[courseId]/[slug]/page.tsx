@@ -1,6 +1,6 @@
 import { generateMetadata, generateStaticParams } from '@/lib/courses';
 import { getCourse } from '@/services/graphql/courses';
-import { CourseOverviewContent } from './_components';
+import { OverviewContent } from './_components';
 import { notFound } from 'next/navigation';
 
 type CourseOverviewPageParams = {
@@ -22,7 +22,7 @@ export default async function CourseOverviewPage({
 
 	return (
 		<div className="container mx-auto px-4 py-12">
-			<CourseOverviewContent course={{ ...course, id: courseId, slug }} />
+			<OverviewContent course={{ ...course, id: courseId, slug }} />
 		</div>
 	);
 }

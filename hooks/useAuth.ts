@@ -7,7 +7,7 @@ import {
 	SignUpInput,
 	signUpSchema,
 } from '@/lib/validations';
-import { useAuthStore, useCourseStore } from '@/store';
+import { useAuthStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { ProviderType, User } from '@/types/auth';
@@ -19,9 +19,6 @@ export const useAuth = () => {
 	const router = useRouter();
 	const setUser = useAuthStore(state => state.setUser);
 	const clearSession = useAuthStore(state => state.clearSession);
-	const clearLastVisitedCourse = useCourseStore(
-		state => state.clearLastVisitedCourse,
-	);
 
 	const login = async (credentials: LoginInput) => {
 		const parsed = await parseAndValidate(credentials, loginSchema);
@@ -59,8 +56,6 @@ export const useAuth = () => {
 			type: 'client',
 		});
 
-		clearLastVisitedCourse();
-
 		router.push(APP_ROUTES.HOME);
 	};
 
@@ -73,7 +68,6 @@ export const useAuth = () => {
 		});
 
 		clearSession();
-		clearLastVisitedCourse();
 		router.push(APP_ROUTES.LOGIN);
 	};
 

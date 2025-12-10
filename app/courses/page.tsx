@@ -1,4 +1,4 @@
-import { CoursesFiltersBar, CoursesSearchBar } from './_components';
+import { FiltersBar, SearchBar } from './_components';
 import { ErrorBoundary, HeroSection } from '@/components/common';
 import { CoursesList, CoursesListSkeleton } from '@/components/features';
 import { Separator } from '@/components/ui';
@@ -34,11 +34,11 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
 					for your learning journey"
 			/>
 
-			<CoursesSearchBar />
+			<SearchBar />
 
 			<Separator className="my-8" />
 
-			<CoursesFiltersBar />
+			<FiltersBar />
 
 			<section className="container mx-auto my-[clamp(2rem,4vw,3rem)] w-full px-4">
 				<PreloadQuery

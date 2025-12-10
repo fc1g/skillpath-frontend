@@ -1,5 +1,7 @@
 import { AbstractEntity } from '@/types/base';
-import { Category, Tag } from '@/types/courses';
+import { Category } from './category';
+import { Section } from './section';
+import { Tag } from './tag';
 
 export enum CourseLevel {
 	BEGINNER = 'beginner',
@@ -22,7 +24,7 @@ export type Course = {
 	lessonsCount: number;
 	challengesCount: number;
 	durationSeconds: number;
-	durationHours: number;
 	tags: Tag[];
 	categories: Category[];
+	sections: Section[];
 } & AbstractEntity;

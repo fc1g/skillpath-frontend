@@ -1,1 +1,1 @@
-export { default as CoursesSearchBar } from './CoursesSearchBar';
+export { default as SearchBar } from './SearchBar';

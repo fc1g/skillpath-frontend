@@ -1,1 +1,2 @@
-export { default as CourseLearnSidebar } from './CourseLearnSidebar';
+export { default as Sidebar } from './Sidebar';
+export { default as SidebarSkeleton } from './Skeleton';

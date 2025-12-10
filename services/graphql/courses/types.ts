@@ -23,3 +23,22 @@ export type CourseMetadata = {
 	tags: Tag[];
 	categories: Category[];
 };
+
+export type CreateUserRatingInput = {
+	courseId: string;
+	rating: number;
+};
+
+export type CreateCourseProgressInput = {
+	status: string;
+	userId: string;
+	courseId: string;
+	lastAccessedAt: string;
+	lastVisitedItemId?: string | null;
+};
+
+export type CourseUserRatingAndProgressInput = {
+	courseId: string;
+};
+
+export type UpdateCourseProgressInput = Partial<CreateCourseProgressInput>;
