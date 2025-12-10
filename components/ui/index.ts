@@ -14,3 +14,5 @@ export * from './pagination';
 export * from './tabs';
 export * from './sonner';
 export * from './empty';
+export * from './progress';
+export * from './spinner';

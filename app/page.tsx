@@ -1,10 +1,10 @@
-import { HeroSection, SearchBarSkeleton } from '@/components/common';
-import { Suspense } from 'react';
 import {
-	HeroActions,
+	HeroSection,
+	SearchBarSkeleton,
 	HomeSearchBar,
-	PopularCoursesSection,
-} from './_components';
+} from '@/components/common';
+import { Suspense } from 'react';
+import { Actions, PopularCourses } from './(home)/_components';
 
 export default function Home() {
 	return (
@@ -14,14 +14,14 @@ export default function Home() {
 				subtitle="Master new skills with interactive courses designed by experts. Learn
 					at your own pace, build real projects, and advance your career."
 			>
-				<HeroActions />
+				<Actions />
 			</HeroSection>
 
 			<Suspense fallback={<SearchBarSkeleton />}>
 				<HomeSearchBar />
 			</Suspense>
 
-			<PopularCoursesSection />
+			<PopularCourses />
 		</>
 	);
 }

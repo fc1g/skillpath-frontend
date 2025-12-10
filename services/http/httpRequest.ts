@@ -1,23 +1,25 @@
 import { HttpRequestOptions, HttpResponse } from './types';
-import { buildResponseHeaders } from './utils';
-import { INTERNAL_API_URL } from '@/config/env';
+import { INTERNAL_API_URL, NEXT_PUBLIC_API_URL } from '@/config/env';
 
 export async function httpRequest<T>({
 	path,
 	method,
 	body,
-	accessToken,
-	cookies,
+	type = 'server',
 }: HttpRequestOptions): Promise<HttpResponse<T>> {
-	const headers = buildResponseHeaders({ accessToken, cookies });
-
 	try {
-		const res = await fetch(`${INTERNAL_API_URL}/${path}`, {
-			method: method ?? 'GET',
-			body: method === 'GET' || !body ? undefined : JSON.stringify(body),
-			headers,
-			credentials: 'include',
-		});
+		const res = await fetch(
+			`${type === 'client' ? NEXT_PUBLIC_API_URL : INTERNAL_API_URL}/${path}`,
+			{
+				method,
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				body: method === 'GET' || !body ? undefined : JSON.stringify(body),
+				credentials: 'same-origin',
+			},
+		);
 
 		let responseBody;
 

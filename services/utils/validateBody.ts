@@ -18,11 +18,10 @@ type ParseFailure = {
 export type ParseAndValidateResult<T> = ParseSuccess<T> | ParseFailure;
 
 export async function parseAndValidate<T>(
-	request: Request,
+	requestBody: unknown,
 	schema: ZodType<T>,
 ): Promise<ParseAndValidateResult<T>> {
 	try {
-		const requestBody = await request.json();
 		return {
 			ok: true,
 			data: schema.parse(requestBody),

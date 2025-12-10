@@ -1,10 +1,8 @@
 export type HttpRequestOptions = {
 	path: string;
-	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	body?: unknown;
-	accessToken?: string;
-	cookies?: string;
-	retryOn401?: boolean;
+	type?: 'client' | 'server';
 };
 
 export type BackendErrorBody = {

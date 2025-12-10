@@ -1,1 +1,1 @@
-export { default as DashboardTabs } from './DashboardTabs';
+export { default as TabsNavigation } from './TabsNavigation';

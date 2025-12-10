@@ -1,8 +1,16 @@
 'use client';
 
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, } from '@/components/ui';
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+} from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
 import { useSpotlightEffect } from '@/hooks/useSpotlightEffect';
+import { formatDuration, formatRating } from '@/lib/courses';
 import { Course, CourseLevel } from '@/types/courses';
 import Link from 'next/link';
 import CourseContent from '../content/CourseContent';
@@ -25,7 +33,10 @@ export default function CourseCard({ data }: CourseCardProps) {
 						<CourseLevelBadge level={CourseLevel[data.level]} />
 					</CardDescription>
 					<CardAction>
-						<CourseMetaItem label={data.averageRating.toFixed(2)} icon="star" />
+						<CourseMetaItem
+							label={formatRating(data.averageRating)}
+							icon="star"
+						/>
 					</CardAction>
 				</CardHeader>
 				<CardContent>
@@ -37,7 +48,7 @@ export default function CourseCard({ data }: CourseCardProps) {
 				<CardFooter>
 					<div className="flex w-full justify-between">
 						<CourseMetaItem
-							label={data.durationHours.toString()}
+							label={formatDuration(data.durationSeconds).toString()}
 							icon="clock"
 						/>
 						<CourseMetaItem

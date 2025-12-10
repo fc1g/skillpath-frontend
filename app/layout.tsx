@@ -1,4 +1,4 @@
-import { ApolloProvider, ThemeProvider } from './providers';
+import { ApolloProvider, AuthBootstrap, ThemeProvider } from './_providers';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
@@ -25,6 +25,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<>
+						<AuthBootstrap />
 						<ApolloProvider>
 							<div className="wrapper">
 								<Header />

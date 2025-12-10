@@ -1,64 +1,63 @@
 'use client';
 
 import { API_ROUTES, APP_ROUTES } from '@/constants/routes';
-import { LoginInput, SignUpInput } from '@/lib/validations';
+import {
+	LoginInput,
+	loginSchema,
+	SignUpInput,
+	signUpSchema,
+} from '@/lib/validations';
 import { useAuthStore, useCourseStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { User } from '@/types/auth';
-
-async function authRequest<T>(
-	url: string,
-	payload: T,
-	fallbackErrorMessage: string,
-) {
-	const res = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(payload),
-		credentials: 'include',
-	});
-	if (res.status === 401) {
-		return res;
-	}
-
-	if (res.status === 204) {
-		if (!res.ok) throw new Error(fallbackErrorMessage);
-		return null;
-	}
-
-	const responseBody = await res.json();
-	if (!res.ok) throw new Error(responseBody?.message || fallbackErrorMessage);
-
-	return responseBody;
-}
+import { ProviderType, User } from '@/types/auth';
+import { httpRequest } from '@/services/http';
+import { parseAndValidate } from '@/services/utils';
+import { toast } from 'sonner';
 
 export const useAuth = () => {
+	const router = useRouter();
 	const setUser = useAuthStore(state => state.setUser);
 	const clearSession = useAuthStore(state => state.clearSession);
 	const clearLastVisitedCourse = useCourseStore(
 		state => state.clearLastVisitedCourse,
 	);
-	const router = useRouter();
 
 	const login = async (credentials: LoginInput) => {
-		await authRequest<LoginInput>(
-			API_ROUTES.AUTH.LOGIN,
-			credentials,
-			'Login failed',
-		);
+		const parsed = await parseAndValidate(credentials, loginSchema);
+
+		if (!parsed.ok) {
+			toast.error(parsed.body.message);
+			return;
+		}
+
+		await httpRequest({
+			path: API_ROUTES.AUTH.LOGIN,
+			method: 'POST',
+			body: parsed.data,
+			type: 'client',
+		});
 
 		router.push(APP_ROUTES.HOME);
 	};
 
-	const signup = async (credentials: SignUpInput) => {
-		await authRequest<SignUpInput>(
-			API_ROUTES.AUTH.SIGNUP,
-			credentials,
-			'Signup failed',
-		);
+	const signup = async (data: SignUpInput) => {
+		const parsed = await parseAndValidate(data, signUpSchema);
+
+		if (!parsed.ok) {
+			toast.error(parsed.body.message);
+			return;
+		}
+
+		await httpRequest({
+			path: API_ROUTES.AUTH.SIGNUP,
+			method: 'POST',
+			body: {
+				email: parsed.data.email,
+				password: parsed.data.password,
+			},
+			type: 'client',
+		});
 
 		clearLastVisitedCourse();
 
@@ -66,46 +65,47 @@ export const useAuth = () => {
 	};
 
 	const logout = async () => {
-		await authRequest(API_ROUTES.AUTH.LOGOUT, undefined, 'Logout failed');
+		await httpRequest({
+			path: API_ROUTES.AUTH.LOGOUT,
+			method: 'POST',
+			body: undefined,
+			type: 'client',
+		});
+
 		clearSession();
 		clearLastVisitedCourse();
 		router.push(APP_ROUTES.LOGIN);
 	};
 
 	const refresh = async () => {
-		const res = await authRequest(
-			API_ROUTES.AUTH.REFRESH,
-			undefined,
-			'Failed to rotate tokens',
-		);
-		if (!res.ok && res.status === 401) {
-			await logout();
-			router.push(APP_ROUTES.LOGIN);
-		}
+		await httpRequest({
+			path: API_ROUTES.AUTH.REFRESH,
+			method: 'POST',
+			body: undefined,
+			type: 'client',
+		});
 
 		router.push(APP_ROUTES.HOME);
 	};
 
-	const startOauth = useCallback((provider: 'github' | 'google') => {
+	const startOAuth = useCallback((provider: ProviderType) => {
 		window.location.href = `/api/v1/oauth/${provider}`;
 	}, []);
 
 	const getMe = async () => {
-		const request = async () =>
-			fetch(API_ROUTES.AUTH.ME, {
-				method: 'GET',
-				credentials: 'include',
-			});
+		const responseBody = await httpRequest<User>({
+			path: API_ROUTES.AUTH.ME,
+			method: 'GET',
+			body: undefined,
+			type: 'client',
+		});
 
-		let res = await request();
-
-		if (!res?.ok && res.status === 401) {
-			await refresh();
-			res = await request();
+		if (!responseBody.ok) {
+			await logout();
+			throw new Error(responseBody.body.message || 'Failed to fetch user');
 		}
 
-		const user = (await res.json()) as User;
-		setUser(user);
+		setUser(responseBody.body);
 	};
 
 	return {
@@ -113,7 +113,7 @@ export const useAuth = () => {
 		signup,
 		logout,
 		refresh,
-		startOauth,
+		startOAuth,
 		getMe,
 	};
 };

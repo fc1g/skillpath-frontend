@@ -1,12 +1,14 @@
-type ResetPasswordGeneratedPageParams = {
+import { ResetPasswordConfirmForm } from '../../_components';
+
+type ResetPasswordConfirmPageParams = {
 	params: Promise<{
 		token: string;
 	}>;
 };
 
-export default async function ResetPasswordGeneratedPage({
+export default async function ResetPasswordConfirmPage({
 	params,
-}: ResetPasswordGeneratedPageParams) {
+}: ResetPasswordConfirmPageParams) {
 	const { token } = await params;
-	return <div>Reset Password Generated Page: {token}</div>;
+	return <ResetPasswordConfirmForm token={token} />;
 }

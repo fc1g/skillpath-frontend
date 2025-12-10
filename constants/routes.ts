@@ -11,10 +11,10 @@ export const APP_ROUTES = {
 
 export const API_ROUTES = {
 	AUTH: {
-		LOGIN: '/api/auth/login',
-		SIGNUP: '/api/auth/signup',
-		LOGOUT: '/api/auth/logout',
-		REFRESH: '/api/auth/refresh',
-		ME: '/api/auth/me',
+		LOGIN: 'auth/login',
+		SIGNUP: 'auth/signup',
+		LOGOUT: 'auth/logout',
+		REFRESH: 'auth/refresh',
+		ME: 'users/me',
 	},
 } as const;

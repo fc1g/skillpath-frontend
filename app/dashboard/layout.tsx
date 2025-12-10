@@ -1,26 +1,17 @@
-import { AuthBootstrap } from '../providers';
 import type { ReactNode } from 'react';
-import { DashboardTabs } from './_components';
+import { TabsNavigation } from './_components';
 
 type DashboardLayoutProps = {
-	profile: ReactNode;
-	courses: ReactNode;
-	assistant: ReactNode;
+	children: ReactNode;
 };
 
 export default function DashboardLayout({
-	profile,
-	courses,
-	assistant,
+	children,
 }: Readonly<DashboardLayoutProps>) {
 	return (
-		<>
-			<AuthBootstrap />
-			<DashboardTabs
-				profile={profile}
-				courses={courses}
-				assistant={assistant}
-			/>
-		</>
+		<div className="container mx-auto my-8 w-full px-4">
+			<TabsNavigation />
+			<div className="mt-6">{children}</div>
+		</div>
 	);
 }

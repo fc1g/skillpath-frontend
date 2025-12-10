@@ -1,33 +1,41 @@
-import { PASSWORD_VALIDATION } from '@/constants/patterns';
 import { z } from 'zod';
+import {
+	emailField,
+	passwordConfirmField,
+	passwordField,
+	withPasswordConfirmation,
+} from './shared';
 
 const baseAuthSchema = z.object({
-	email: z.email({
-		message: 'Please provide a valid email address',
-	}),
-	password: z.string().regex(PASSWORD_VALIDATION, {
-		message:
-			'Password must be at least 8 characters with uppercase, lowercase, number and special character',
-	}),
+	email: emailField,
+	password: passwordField,
 });
 
 export const loginSchema = baseAuthSchema;
 
-export const signUpSchema = baseAuthSchema
-	.extend({
-		passwordConfirm: z.string().nonempty(),
-	})
-	.refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-		message: 'Passwords must match',
-		path: ['passwordConfirm'],
-	});
+export const signUpSchema = withPasswordConfirmation(
+	baseAuthSchema.extend({
+		passwordConfirm: passwordConfirmField,
+	}),
+);
 
 export const resetPasswordSchema = z.object({
-	email: z.email({
-		message: 'Please provide a valid email address',
-	}),
+	email: emailField,
 });
 
+export const resetPasswordConfirmSchema = withPasswordConfirmation(
+	z.object({
+		newPassword: passwordField,
+		newPasswordConfirm: passwordConfirmField,
+		token: z.string(),
+	}),
+	'newPassword',
+	'newPasswordConfirm',
+);
+
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type ResetPasswordConfirmInput = z.infer<
+	typeof resetPasswordConfirmSchema
+>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignUpInput = z.infer<typeof signUpSchema>;
