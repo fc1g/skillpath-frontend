@@ -52,7 +52,7 @@ export default function CourseEnrollmentCard({
 								`${APP_ROUTES.COURSES}/${courseId}/${courseSlug}/learn`,
 							);
 						}}
-						disabled={loading || !!error}
+						disabled={loading || !!error || !user?.id}
 						className="flex cursor-pointer items-center justify-center gap-2"
 						variant="ghost"
 					>

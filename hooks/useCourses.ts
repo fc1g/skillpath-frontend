@@ -13,15 +13,15 @@ import {
 	UPDATE_COURSE_PROGRESS,
 	UpdateCourseProgressInput,
 } from '@/services/graphql/courses';
-import { Course, UserRating } from '@/types/courses';
-import { useMutation, useSuspenseQuery } from '@apollo/client/react';
-import { CourseProgress } from '@/types/progress';
+import { UpdateLessonProgressInput } from '@/services/graphql/courses/lessons';
+import { UPDATE_LESSON_PROGRESS } from '@/services/graphql/courses/lessons/mutations';
 import { useUser } from '@/store';
+import { Course, UserRating } from '@/types/courses';
+import { CourseProgress } from '@/types/progress';
+import { LessonProgress } from '@/types/progress/lesson-progress';
+import { useMutation, useSuspenseQuery } from '@apollo/client/react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { LessonProgress } from '@/types/progress/lesson-progress';
-import { UPDATE_LESSON_PROGRESS } from '@/services/graphql/courses/lessons/mutations';
-import { UpdateLessonProgressInput } from '@/services/graphql/courses/lessons';
 
 type CoursesWithTotal = {
 	courses: {
@@ -153,12 +153,11 @@ export const useCourse = (id: string): Course => {
 
 export const useCourseUserRatingAndProgress = ({
 	courseId,
+	userId,
 }: CourseUserRatingAndProgressInput) => {
-	const user = useUser();
-
-	useEffect(() => {
-		if (!user) return;
-	}, [user]);
+	if (!userId) {
+		throw new Error('User is not authenticated. Please login to continue.');
+	}
 
 	const { data } = useSuspenseQuery<{
 		courseUserRatingAndProgress: {
@@ -169,7 +168,7 @@ export const useCourseUserRatingAndProgress = ({
 	}>(GET_COURSE_USER_RATING_AND_PROGRESS, {
 		variables: {
 			courseUserRatingAndProgressInput: {
-				userId: user?.id,
+				userId: userId,
 				courseId,
 			},
 		},

@@ -39,6 +39,7 @@ export type CreateCourseProgressInput = {
 
 export type CourseUserRatingAndProgressInput = {
 	courseId: string;
+	userId: string | null;
 };
 
 export type UpdateCourseProgressInput = Partial<CreateCourseProgressInput>;

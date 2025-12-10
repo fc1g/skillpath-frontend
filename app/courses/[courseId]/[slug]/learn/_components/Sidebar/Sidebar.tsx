@@ -1,18 +1,20 @@
 'use client';
 
+import { useCourseUserRatingAndProgress } from '@/hooks';
 import { Course } from '@/types/courses';
 import { useParams } from 'next/navigation';
-import { useCourseUserRatingAndProgress } from '@/hooks';
-import Progress from './Progress';
 import LeaveRating from './LeaveRating';
+import Progress from './Progress';
 import Section from './Section';
 
 type CourseLearnSidebarProps = {
 	course: Course;
+	userId: string | null;
 };
 
 export default function CourseLearnSidebar({
 	course,
+	userId,
 }: CourseLearnSidebarProps) {
 	const { lessonId, challengeId } = useParams<{
 		lessonId?: string;
@@ -20,6 +22,7 @@ export default function CourseLearnSidebar({
 	}>();
 	const { rating, progress } = useCourseUserRatingAndProgress({
 		courseId: course.id,
+		userId,
 	});
 
 	return (

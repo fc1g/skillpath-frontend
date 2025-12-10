@@ -1,8 +1,8 @@
+import { APP_ROUTES } from '@/constants/routes';
 import { Section } from '@/types/courses';
 import { CourseProgress } from '@/types/progress';
-import { APP_ROUTES } from '@/constants/routes';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
-import SectionNavBtn from '@/app/courses/[courseId]/[slug]/learn/_components/Sidebar/SectionNavBtn';
+import SectionNavBtn from './SectionNavBtn';
 
 type CourseLearnSectionProps = {
 	section: Section;
