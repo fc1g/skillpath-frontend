@@ -18,7 +18,7 @@ import { Course, CourseRating } from '@/types/courses';
 import { CourseProgress } from '@/types/progress';
 import { LessonProgress } from '@/types/progress/lesson-progress';
 import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 type CoursesWithTotal = {
@@ -145,15 +145,16 @@ export const useUpdateCourseProgress = () => {
 		{ updateCourseProgressInput: UpdateCourseProgressInput }
 	>(UPDATE_COURSE_PROGRESS);
 
-	const updateCourseProgress = (
-		updateCourseProgressInput: UpdateCourseProgressInput,
-	) =>
-		mutate({
-			variables: {
-				updateCourseProgressInput,
-			},
-			fetchPolicy: 'network-only',
-		});
+	const updateCourseProgress = useCallback(
+		(updateCourseProgressInput: UpdateCourseProgressInput) =>
+			mutate({
+				variables: {
+					updateCourseProgressInput,
+				},
+				fetchPolicy: 'network-only',
+			}),
+		[mutate],
+	);
 
 	return { updateCourseProgress, data, loading, error };
 };

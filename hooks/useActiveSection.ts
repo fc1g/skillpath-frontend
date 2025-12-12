@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Section } from '@/types/courses';
 
@@ -15,11 +15,14 @@ export const useActiveSection = (section: Section) => {
 	const [isManuallyOpen, setIsManuallyOpen] = useState(false);
 	const isOpen = isActiveSection || isManuallyOpen;
 
-	const handleOpenChange = (open: boolean) => {
-		if (!isActiveSection) {
-			setIsManuallyOpen(open);
-		}
-	};
+	const handleOpenChange = useCallback(
+		(open: boolean) => {
+			if (!isActiveSection) {
+				setIsManuallyOpen(open);
+			}
+		},
+		[isActiveSection],
+	);
 
 	return {
 		isActiveSection,
