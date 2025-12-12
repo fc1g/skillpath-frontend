@@ -34,8 +34,8 @@ export const CREATE_COURSE_PROGRESS = gql`
 `;
 
 export const RATE_COURSE = gql`
-	mutation RateCourse($createUserRatingInput: CreateUserRatingInput!) {
-		rateCourse(createUserRatingInput: $createUserRatingInput) {
+	mutation RateCourse($createCourseRatingInput: CreateCourseRatingInput!) {
+		rateCourse(createCourseRatingInput: $createCourseRatingInput) {
 			userId
 			courseId
 			rating

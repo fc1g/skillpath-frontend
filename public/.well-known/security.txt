@@ -1,0 +1,5 @@
+Contact: mailto:shapovalartem.dev@gmail.com
+Expires: 2027-01-01T09:00:00.000Z
+Acknowledgments: https://fc1g-lab.dev/hall-of-fame.html
+Preferred-Languages: en, uk
+Canonical: https://fc1g-lab.dev/.well-known/security.txt

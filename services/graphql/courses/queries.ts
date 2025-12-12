@@ -1,5 +1,55 @@
 import { gql } from '@apollo/client';
 
+export const GET_COURSE = gql`
+	query GetCourse($id: ID!) {
+		course(id: $id) {
+			title
+			subtitle
+			description
+			requirements
+			learningOutcomes
+			includedFeatures
+			level
+			averageRating
+			ratingsCount
+			studentsCount
+			lessonsCount
+			challengesCount
+			durationSeconds
+			tags {
+				name
+				slug
+			}
+			categories {
+				name
+				slug
+			}
+			sections {
+				id
+				title
+				order
+				lessons {
+					id
+					title
+					order
+					content
+				}
+				challenges {
+					id
+					title
+					instructions
+					requirements
+					example
+					difficulty
+					order
+					expectedOutput
+					expectedStructure
+				}
+			}
+		}
+	}
+`;
+
 export const GET_COURSES = gql`
 	query GetCourses($coursesPaginationQueryInput: CoursesPaginationQueryInput!) {
 		courses(coursesPaginationQueryInput: $coursesPaginationQueryInput) {
@@ -66,63 +116,9 @@ export const GET_COURSE_METADATA = gql`
 	}
 `;
 
-export const GET_COURSE = gql`
-	query GetCourse($id: ID!) {
-		course(id: $id) {
-			title
-			subtitle
-			description
-			requirements
-			learningOutcomes
-			includedFeatures
-			level
-			averageRating
-			ratingsCount
-			studentsCount
-			lessonsCount
-			challengesCount
-			durationSeconds
-			tags {
-				name
-				slug
-			}
-			categories {
-				name
-				slug
-			}
-			sections {
-				id
-				title
-				order
-				lessons {
-					id
-					title
-					order
-					content
-				}
-				challenges {
-					id
-					title
-					instructions
-					requirements
-					example
-					difficulty
-					order
-					expectedOutput
-					expectedStructure
-				}
-			}
-		}
-	}
-`;
-
-export const GET_COURSE_USER_RATING_AND_PROGRESS = gql`
-	query GetCourseUserRatingAndProgress(
-		$courseUserRatingAndProgressInput: CourseUserRatingAndProgressInput!
-	) {
-		courseUserRatingAndProgress(
-			courseUserRatingAndProgressInput: $courseUserRatingAndProgressInput
-		) {
+export const GET_COURSE_RATING_AND_PROGRESS = gql`
+	query GetCourseRatingAndProgress($courseId: ID!) {
+		courseRatingAndProgress(courseId: $courseId) {
 			rating
 			review
 			progress {
@@ -139,6 +135,15 @@ export const GET_COURSE_USER_RATING_AND_PROGRESS = gql`
 				lastAccessedAt
 				completedAt
 			}
+		}
+	}
+`;
+
+export const GET_COURSE_LAST_VISITED_ITEM_ID = gql`
+	query GetCourseProgressBy($courseId: ID!) {
+		courseProgressBy(courseId: $courseId) {
+			lastVisitedItemId
+			lastAccessedAt
 		}
 	}
 `;

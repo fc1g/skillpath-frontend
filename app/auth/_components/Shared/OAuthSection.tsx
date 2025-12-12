@@ -1,12 +1,12 @@
 'use client';
 
 import { Separator } from '@/components/ui';
-import { useAuth } from '@/hooks';
+import { useOAuth } from '@/hooks';
 import { ProviderType } from '@/types/auth';
 import OAuthButton from './OAuthButton';
 
 export default function OAuthSection() {
-	const { startOAuth } = useAuth();
+	const { startOAuth } = useOAuth();
 
 	return (
 		<div className="flex flex-col justify-center gap-4">

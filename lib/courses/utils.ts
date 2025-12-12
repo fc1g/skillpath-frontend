@@ -1,5 +1,7 @@
 import { COURSE_RATING_DECIMALS } from './constants';
-import { Course } from '@/types/courses';
+import { Course, Section } from '@/types/courses';
+import { CourseProgress } from '@/types/progress';
+import { LessonProgressStatus } from '@/types/progress/lesson-progress';
 
 const SECONDS_IN_HOUR = 60 * 60;
 
@@ -73,4 +75,52 @@ export const getAdjacentStep = (
 			: null;
 
 	return { prev, next };
+};
+
+export const getInitialCourseLesson = (course: Course) => {
+	const sections = [...course.sections]?.sort((a, b) => a.order - b.order);
+	const firstSection = sections[0];
+
+	if (!firstSection || !firstSection.lessons.length)
+		return {
+			section: null,
+			lesson: null,
+		};
+
+	const lessons = [...firstSection.lessons]?.sort((a, b) => a.order - b.order);
+	const firstLesson = lessons[0];
+
+	return {
+		section: firstSection,
+		lesson: firstLesson,
+	};
+};
+
+export const calculateSectionProgress = (
+	section: Section,
+	progress: CourseProgress,
+) => {
+	const lessonsCount = section.lessons.length;
+	const challengesCount = section.challenges.length;
+
+	const completedLessonsCount = progress.lessonsProgresses
+		.filter(lessonProgress =>
+			section.lessons
+				.map(lesson => lesson.id)
+				.includes(lessonProgress.lessonId),
+		)
+		.filter(
+			lessonProgress =>
+				lessonProgress.status?.toLowerCase() === LessonProgressStatus.COMPLETED,
+		).length;
+
+	const uncompletedCount =
+		lessonsCount + challengesCount - completedLessonsCount;
+
+	return {
+		lessonsCount,
+		challengesCount,
+		completedLessonsCount,
+		uncompletedCount,
+	};
 };

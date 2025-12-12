@@ -1,11 +1,22 @@
 'use client';
 
 import { Challenge } from '@/types/courses';
-import { useCodeWorkspaceStore, useDraft, useHasHydratedWorkspace, } from './_store/useCodeWorkspaceStore';
+import {
+	useCodeWorkspaceStore,
+	useDraft,
+	useHasHydratedWorkspace,
+} from './_store/useCodeWorkspaceStore';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
 import { Editor } from '@monaco-editor/react';
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle, } from '@/components/ui';
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui';
 import { formatLanguage } from '@/lib/courses/challenges';
 import { capitalize } from '@/lib/utils';
 import { useVim } from './_hooks/useVim';

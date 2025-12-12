@@ -1,9 +1,8 @@
-import { ErrorBoundary } from '@/components/common';
-import { getServerUserId } from '@/lib/auth/server';
 import { getCourse } from '@/services/graphql/courses';
 import { notFound } from 'next/navigation';
-import { ReactNode, Suspense } from 'react';
-import { Sidebar, SidebarSkeleton } from './_components';
+import { ReactNode } from 'react';
+import { Sidebar, SidebarTrigger } from './_components';
+import { ContentLayout } from '@/app/_components';
 
 type LearnLayoutProps = {
 	params: Promise<{
@@ -18,19 +17,17 @@ export default async function LearnLayout({
 	children,
 }: LearnLayoutProps) {
 	const { courseId, slug } = await params;
-	const userId = await getServerUserId();
 	const course = await getCourse(courseId);
 	if (!course) return notFound();
 
 	return (
-		<div className="flex min-h-screen flex-col md:flex-row">
-			<ErrorBoundary>
-				<Suspense fallback={<SidebarSkeleton />}>
-					<Sidebar course={{ ...course, id: courseId, slug }} userId={userId} />
-				</Suspense>
-			</ErrorBoundary>
+		<>
+			<Sidebar course={{ ...course, id: courseId, slug }} />
 
-			<div className="min-w-0 flex-1">{children}</div>
-		</div>
+			<ContentLayout>
+				<SidebarTrigger />
+				{children}
+			</ContentLayout>
+		</>
 	);
 }

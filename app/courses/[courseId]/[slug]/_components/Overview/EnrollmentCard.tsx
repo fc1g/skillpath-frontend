@@ -9,25 +9,45 @@ import {
 	CardTitle,
 } from '@/components/ui';
 import { useRouter } from 'next/navigation';
-import { APP_ROUTES } from '@/constants/routes';
-import { useUser } from '@/store';
 import { useCreateCourseProgress } from '@/hooks';
+import { APP_ROUTES } from '@/constants/routes';
 import { CourseProgressStatus } from '@/types/progress';
+import { useHasHydratedAuthStore, useStatus, useUser } from '@/store';
 
 type CourseEnrollmentCardProps = {
 	courseId: string;
 	courseSlug: string;
+	firstLessonId?: string;
 	includedFeatures: string[];
 };
 
 export default function CourseEnrollmentCard({
 	courseId,
 	courseSlug,
+	firstLessonId,
 	includedFeatures,
 }: CourseEnrollmentCardProps) {
 	const router = useRouter();
 	const { createCourseProgress, loading, error } = useCreateCourseProgress();
 	const user = useUser();
+	const status = useStatus();
+	const hasHydrated = useHasHydratedAuthStore();
+
+	const handleClick = async () => {
+		if (!user || status !== 'authenticated') {
+			router.push(APP_ROUTES.LOGIN);
+			return;
+		}
+
+		await createCourseProgress({
+			status: CourseProgressStatus.ENROLLED,
+			courseId,
+			lastAccessedAt: new Date().toISOString(),
+		});
+		router.push(
+			`${APP_ROUTES.COURSES}/${courseId}/${courseSlug}/learn/${firstLessonId ? `lesson/${firstLessonId}` : ''}`,
+		);
+	};
 
 	return (
 		<div className="max-w-xl lg:col-span-1 lg:max-w-none">
@@ -41,18 +61,8 @@ export default function CourseEnrollmentCard({
 					</CardDescription>
 
 					<Button
-						onClick={async () => {
-							await createCourseProgress({
-								status: CourseProgressStatus.ENROLLED,
-								userId: user!.id,
-								courseId,
-								lastAccessedAt: new Date().toISOString(),
-							});
-							router.push(
-								`${APP_ROUTES.COURSES}/${courseId}/${courseSlug}/learn`,
-							);
-						}}
-						disabled={loading || !!error || !user?.id}
+						onClick={handleClick}
+						disabled={loading || !!error || !hasHydrated}
 						className="flex cursor-pointer items-center justify-center gap-2"
 						variant="ghost"
 					>

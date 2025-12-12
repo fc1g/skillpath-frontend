@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui';
+import { APP_ROUTES } from '@/constants/routes';
 import { useRouter } from 'next/navigation';
 import { useUpdateLessonProgress } from '@/hooks';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
-import { APP_ROUTES } from '@/constants/routes';
 
 type Step = {
 	id?: string;
@@ -28,13 +28,9 @@ export default function StepNavBtn({
 }: StepNavBtnProps) {
 	const router = useRouter();
 	const { updateLessonProgress, loading, error } = useUpdateLessonProgress();
-	// const {
-	// 	updateCourseProgress,
-	// 	loading: courseProgressLoading,
-	// 	error: courseProgressError,
-	// } = useUpdateCourseProgress();
 
-	if (!nextStep.type || !nextStep.id) return <div></div>;
+	if ((type === 'prev' && !nextStep.type) || (type === 'prev' && !nextStep.id))
+		return <div></div>;
 
 	const handleClick = async () => {
 		if (type === 'next' && currentStep.type === 'lesson') {
@@ -46,9 +42,6 @@ export default function StepNavBtn({
 		}
 
 		if (nextStep.id) {
-			// await updateCourseProgress({
-			// 	lastVisitedItemId: nextStep.id,
-			// });
 			router.push(
 				`${APP_ROUTES.COURSES}/${courseId}/${slug}/learn/${nextStep.type}/${nextStep.id}`,
 				{
@@ -60,10 +53,9 @@ export default function StepNavBtn({
 
 	return (
 		<Button
-			className="mt-4"
 			size="lg"
 			variant={type === 'prev' ? 'ghost' : 'default'}
-			disabled={!nextStep.id || loading || !!error}
+			disabled={loading || !!error}
 			onClick={handleClick}
 		>
 			{type === 'prev' ? 'Previous' : 'Next'}

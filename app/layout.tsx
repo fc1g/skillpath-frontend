@@ -1,9 +1,8 @@
-import { ApolloProvider, AuthBootstrap, ThemeProvider } from './_providers';
+import { SidebarProvider, Toaster } from '@/components/ui';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { ApolloProvider, AuthBootstrap, ThemeProvider } from './_providers';
 import './globals.css';
-import { Footer, Header } from '@/components/features';
-import { Toaster } from '@/components/ui';
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -24,19 +23,21 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<>
-						<AuthBootstrap />
-						<ApolloProvider>
-							<div className="wrapper">
-								<Header />
+					<ApolloProvider>
+						<AuthBootstrap>
+							<>
+								<SidebarProvider
+									style={{
+										['--sidebar-width' as string]: '20rem',
+									}}
+								>
+									{children}
+								</SidebarProvider>
 
-								<main className="flex-auto">{children}</main>
-
-								<Footer />
-							</div>
-						</ApolloProvider>
-						<Toaster />
-					</>
+								<Toaster />
+							</>
+						</AuthBootstrap>
+					</ApolloProvider>
 				</ThemeProvider>
 			</body>
 		</html>

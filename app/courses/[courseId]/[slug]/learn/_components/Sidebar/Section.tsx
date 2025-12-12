@@ -1,69 +1,118 @@
-import { APP_ROUTES } from '@/constants/routes';
+'use client';
+
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarMenu,
+	SidebarMenuBadge,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+} from '@/components/ui';
+import Link from 'next/link';
 import { Section } from '@/types/courses';
 import { CourseProgress } from '@/types/progress';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
-import SectionNavBtn from './SectionNavBtn';
+import { useActiveSection } from '@/hooks';
+import { calculateSectionProgress } from '@/lib/courses';
 
-type CourseLearnSectionProps = {
+type CourseSectionProps = {
 	section: Section;
 	progress: CourseProgress;
-	courseId: string;
-	slug: string;
-	lessonId?: string;
-	challengeId?: string;
+	index: number;
+	baseHref: string;
 };
 
-export default function CourseLearnSection({
+export default function CourseSection({
 	section,
 	progress,
-	courseId,
-	slug,
-	lessonId,
-	challengeId,
-}: CourseLearnSectionProps) {
+	index,
+	baseHref,
+}: CourseSectionProps) {
+	const { isActiveSection, isOpen, handleOpenChange, lessonId, challengeId } =
+		useActiveSection(section);
+
+	const { uncompletedCount } = calculateSectionProgress(section, progress);
+
 	return (
-		<div className="space-y-2">
-			<h3 className="text-foreground font-medium">{section.title}</h3>
-			<div className="space-y-1">
-				<>
-					{section.lessons.map(lesson => {
-						const lessonProgress = progress.lessonsProgresses.find(
-							lessonProgress => lessonProgress.lessonId === lesson.id,
-						);
+		<SidebarGroup>
+			<SidebarGroupLabel>Section {index}</SidebarGroupLabel>
+			<SidebarMenu>
+				<Collapsible
+					open={isOpen}
+					onOpenChange={handleOpenChange}
+					className="group/collapsible"
+				>
+					<SidebarMenuItem>
+						<CollapsibleTrigger asChild>
+							<SidebarMenuButton isActive={isActiveSection}>
+								{section.title}
+							</SidebarMenuButton>
+						</CollapsibleTrigger>
+						<CollapsibleContent>
+							<SidebarMenuSub>
+								{section.lessons.map(lesson => {
+									const lessonProgress = progress.lessonsProgresses.find(
+										lessonProgress => lessonProgress.lessonId === lesson.id,
+									);
 
-						if (!lessonProgress) {
-							// 	TODO: Create a progress for this lesson
-						}
+									if (!lessonProgress) {
+										// 	TODO: Create lesson progress
+									}
 
-						return (
-							<SectionNavBtn
-								key={lesson.id}
-								label={lesson.title}
-								linkHref={`${APP_ROUTES.COURSES}/${courseId}/${slug}/learn/lesson/${lesson.id}`}
-								isCompleted={
-									lessonProgress?.status.toLowerCase() ===
-									LessonProgressStatus.COMPLETED
-								}
-								isDisabled={lesson.id === lessonId}
-							/>
-						);
-					})}
+									return (
+										<SidebarMenuSubItem key={lesson.id}>
+											<SidebarMenuSubButton
+												asChild
+												isActive={lessonId === lesson.id}
+											>
+												<Link href={`${baseHref}/lesson/${lesson.id}`}>
+													<div>
+														<svg className="size-5">
+															<use
+																href={`/icons/sprite.svg#${lessonProgress?.status.toLowerCase() === LessonProgressStatus.COMPLETED ? 'check' : 'unchecked'}`}
+															/>
+														</svg>
+													</div>
+													<span>{lesson.title}</span>
+												</Link>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+									);
+								})}
 
-					{section.challenges.map(challenge => {
-						// TODO: use challenge progress
-
-						return (
-							<SectionNavBtn
-								key={challenge.id}
-								label={challenge.title}
-								linkHref={`${APP_ROUTES.COURSES}/${courseId}/${slug}/learn/challenge/${challenge.id}`}
-								isCompleted={false}
-								isDisabled={challenge.id === challengeId}
-							/>
-						);
-					})}
-				</>
-			</div>
-		</div>
+								{section.challenges.map(challenge => {
+									return (
+										<SidebarMenuSubItem key={challenge.id}>
+											<SidebarMenuSubButton
+												asChild
+												isActive={challengeId === challenge.id}
+											>
+												<Link href={`${baseHref}/challenge/${challenge.id}`}>
+													<div>
+														<svg className="size-5">
+															<use href={`/icons/sprite.svg#unchecked`} />
+														</svg>
+													</div>
+													<span>{challenge.title}</span>
+												</Link>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+									);
+								})}
+							</SidebarMenuSub>
+						</CollapsibleContent>
+						<SidebarMenuBadge>
+							{uncompletedCount ? uncompletedCount : ''}
+						</SidebarMenuBadge>
+					</SidebarMenuItem>
+				</Collapsible>
+			</SidebarMenu>
+		</SidebarGroup>
 	);
 }

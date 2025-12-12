@@ -2,6 +2,7 @@ import { generateMetadata, generateStaticParams } from '@/lib/courses';
 import { getCourse } from '@/services/graphql/courses';
 import { OverviewContent } from './_components';
 import { notFound } from 'next/navigation';
+import { ContentLayout } from '@/app/_components';
 
 type CourseOverviewPageParams = {
 	params: Promise<{
@@ -21,8 +22,10 @@ export default async function CourseOverviewPage({
 	if (!course) return notFound();
 
 	return (
-		<div className="container mx-auto px-4 py-12">
-			<OverviewContent course={{ ...course, id: courseId, slug }} />
-		</div>
+		<ContentLayout>
+			<div className="container mx-auto px-4 py-12">
+				<OverviewContent course={{ ...course, id: courseId, slug }} />
+			</div>
+		</ContentLayout>
 	);
 }

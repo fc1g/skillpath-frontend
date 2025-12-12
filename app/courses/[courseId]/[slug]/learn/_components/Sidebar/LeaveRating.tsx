@@ -1,20 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui';
 import { useRateCourse } from '@/hooks';
-import { useState } from 'react';
 
 const STARS_COUNT = 5;
 
-type CourseLearnLeaveRatingProps = {
+type LeaveRatingProps = {
 	courseId: string;
 	initialRating: number | null;
 };
 
-export default function CourseLearnLeaveRating({
+export default function LeaveRating({
 	courseId,
 	initialRating,
-}: CourseLearnLeaveRatingProps) {
+}: LeaveRatingProps) {
 	const [rating, setRating] = useState<number>(initialRating ?? 0);
 	const [hovered, setHovered] = useState<number>(0);
 	const { rateCourse, loading, error } = useRateCourse();
@@ -53,7 +53,7 @@ export default function CourseLearnLeaveRating({
 
 			<Button
 				disabled={
-					rating === 0 || loading || !!error || rating === initialRating
+					rating === 0 || loading || !!error || initialRating === rating
 				}
 				onClick={async () => {
 					await rateCourse({

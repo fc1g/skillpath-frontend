@@ -1,19 +1,19 @@
 'use client';
 
-import { CourseProgress } from '@/types/progress';
 import { Progress } from '@/components/ui';
+import { CourseProgress } from '@/types/progress';
 
-type CourseLearnProgressProps = {
+type CourseProgressProps = {
+	progress: CourseProgress;
 	lessonsCount: number;
 	challengesCount: number;
-	progress: CourseProgress;
 };
 
 export default function CourseLearnProgress({
+	progress,
 	lessonsCount,
 	challengesCount,
-	progress,
-}: CourseLearnProgressProps) {
+}: CourseProgressProps) {
 	const value =
 		(100 / (lessonsCount + challengesCount)) *
 		(progress.completedLessonsCount + progress.completedChallengesCount);

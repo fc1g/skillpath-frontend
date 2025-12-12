@@ -24,22 +24,17 @@ export type CourseMetadata = {
 	categories: Category[];
 };
 
-export type CreateUserRatingInput = {
+export type CreateCourseRatingInput = {
 	courseId: string;
 	rating: number;
 };
 
 export type CreateCourseProgressInput = {
 	status: string;
-	userId: string;
+	userId?: string;
 	courseId: string;
 	lastAccessedAt: string;
 	lastVisitedItemId?: string | null;
-};
-
-export type CourseUserRatingAndProgressInput = {
-	courseId: string;
-	userId: string | null;
 };
 
 export type UpdateCourseProgressInput = Partial<CreateCourseProgressInput>;

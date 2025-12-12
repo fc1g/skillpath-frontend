@@ -7,6 +7,7 @@ import { PreloadQuery } from '@/services/graphql/client';
 import { GET_COURSES } from '@/services/graphql/courses';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { ContentLayout } from '@/app/_components';
 
 type CoursesPageProps = {
 	searchParams: Promise<ReadonlyURLSearchParams>;
@@ -27,37 +28,39 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
 	};
 
 	return (
-		<>
-			<HeroSection
-				title="Browse All Courses"
-				subtitle="Explore our comprehensive catalog of courses and find the perfect one
+		<ContentLayout>
+			<>
+				<HeroSection
+					title="Browse All Courses"
+					subtitle="Explore our comprehensive catalog of courses and find the perfect one
 					for your learning journey"
-			/>
+				/>
 
-			<SearchBar />
+				<SearchBar />
 
-			<Separator className="my-8" />
+				<Separator className="my-8" />
 
-			<FiltersBar />
+				<FiltersBar />
 
-			<section className="container mx-auto my-[clamp(2rem,4vw,3rem)] w-full px-4">
-				<PreloadQuery
-					query={GET_COURSES}
-					variables={{ coursesPaginationQueryInput }}
-				>
-					<ErrorBoundary>
-						<Suspense fallback={<CoursesListSkeleton limit={limit} />}>
-							<CoursesList
-								limit={limit}
-								offset={offset}
-								category={category}
-								level={level}
-								search={search}
-							/>
-						</Suspense>
-					</ErrorBoundary>
-				</PreloadQuery>
-			</section>
-		</>
+				<section className="container mx-auto my-[clamp(2rem,4vw,3rem)] w-full px-4">
+					<PreloadQuery
+						query={GET_COURSES}
+						variables={{ coursesPaginationQueryInput }}
+					>
+						<ErrorBoundary>
+							<Suspense fallback={<CoursesListSkeleton limit={limit} />}>
+								<CoursesList
+									limit={limit}
+									offset={offset}
+									category={category}
+									level={level}
+									search={search}
+								/>
+							</Suspense>
+						</ErrorBoundary>
+					</PreloadQuery>
+				</section>
+			</>
+		</ContentLayout>
 	);
 }

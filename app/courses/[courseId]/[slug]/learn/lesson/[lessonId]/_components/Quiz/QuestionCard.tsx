@@ -78,10 +78,10 @@ export default function QuestionCard({ quiz, index }: QuestionCardProps) {
 							key={option}
 							disabled={isVerified}
 							variant="ghost"
-							className={`flex cursor-default items-center gap-2 px-2 disabled:opacity-80 ${isCorrect && selectedOptionIndex === index && 'bg-green-400 dark:bg-green-900'} ${isVerified && !isCorrect && selectedOptionIndex === index && 'bg-red-400 dark:bg-red-900'}`}
 							onClick={() => {
 								setSelectedOptionIndex(index);
 							}}
+							className={`flex cursor-default items-center gap-2 px-2 disabled:opacity-80 ${isCorrect && selectedOptionIndex === index && 'bg-green-400 dark:bg-green-900'} ${isVerified && !isCorrect && selectedOptionIndex === index && 'bg-red-400 dark:bg-red-900'}`}
 						>
 							<div className="relative flex h-4 w-4 items-center justify-center">
 								<input

@@ -148,7 +148,7 @@
 
 @layer components {
 	.wrapper {
-		@apply flex min-h-full flex-col overflow-hidden;
+		@apply flex flex-1 min-h-full flex-col overflow-hidden;
 	}
 }
 

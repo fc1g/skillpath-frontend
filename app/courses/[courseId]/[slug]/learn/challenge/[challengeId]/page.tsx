@@ -2,7 +2,10 @@ import { getChallenge } from '@/services/graphql/courses/challenges';
 import { notFound } from 'next/navigation';
 import { ChallengeHeader, ChallengeInfoGrid, Workspace } from './_components';
 import { getCourse } from '@/services/graphql/courses';
-import { StepNav } from '@/app/courses/[courseId]/[slug]/learn/_components';
+import {
+	CourseProgressTracker,
+	StepNav,
+} from '@/app/courses/[courseId]/[slug]/learn/_components';
 
 type ChallengePageProps = {
 	params: Promise<{
@@ -36,6 +39,12 @@ export default async function ChallengePage({ params }: ChallengePageProps) {
 
 	return (
 		<div className="flex flex-1 flex-col gap-6 p-4 sm:p-8">
+			<CourseProgressTracker
+				courseId={courseId}
+				slug={slug}
+				challengeId={challengeId}
+			/>
+
 			<ChallengeHeader
 				challengeTitle={challenge.title}
 				sectionTitle={currentSection.title}

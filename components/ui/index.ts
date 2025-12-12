@@ -16,3 +16,8 @@ export * from './sonner';
 export * from './empty';
 export * from './progress';
 export * from './spinner';
+export * from './sheet';
+export * from './tooltip';
+export * from './sidebar';
+export * from './collapsible';
+export * from './kbd';
