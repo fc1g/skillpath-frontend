@@ -39,11 +39,7 @@ export default async function ChallengePage({ params }: ChallengePageProps) {
 
 	return (
 		<div className="flex flex-1 flex-col gap-6 p-4 sm:p-8">
-			<CourseProgressTracker
-				courseId={courseId}
-				slug={slug}
-				challengeId={challengeId}
-			/>
+			<CourseProgressTracker courseId={courseId} challengeId={challengeId} />
 
 			<ChallengeHeader
 				challengeTitle={challenge.title}

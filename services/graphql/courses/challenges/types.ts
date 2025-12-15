@@ -13,3 +13,8 @@ export type ChallengeMetadata = {
 	difficulty: ChallengeDifficulty;
 	language: ChallengeLanguage;
 };
+
+export type CreateChallengeDraftInput = {
+	challengeId: string;
+	code: string;
+};

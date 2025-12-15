@@ -11,12 +11,18 @@ export const profileSchema = z.object({
 		message: 'Username must be at least 4 characters',
 	}),
 	email: emailField,
+	userId: z.uuid({
+		message: 'Invalid user ID',
+	}),
 });
 
 export const profileSetNewPasswordSchema = withPasswordConfirmation(
 	z.object({
 		newPassword: passwordField,
 		newPasswordConfirm: passwordConfirmField,
+		userId: z.uuid({
+			message: 'Invalid user ID',
+		}),
 	}),
 	'newPassword',
 	'newPasswordConfirm',

@@ -1,4 +1,5 @@
 import { Category, CourseLevel, Tag } from '@/types/courses';
+import { LastVisitedItemType } from '@/types/progress';
 
 export type PaginationQueryInput = {
 	limit?: number;
@@ -35,6 +36,16 @@ export type CreateCourseProgressInput = {
 	courseId: string;
 	lastAccessedAt: string;
 	lastVisitedItemId?: string | null;
+	lastVisitedItemType?: string | null;
 };
 
 export type UpdateCourseProgressInput = Partial<CreateCourseProgressInput>;
+
+export type LastVisitedCourse = {
+	course: {
+		id: string;
+		slug: string;
+	};
+	lastVisitedItemId: string | null;
+	lastVisitedItemType: LastVisitedItemType | null;
+};

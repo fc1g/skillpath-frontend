@@ -1,16 +1,17 @@
 'use client';
 
-import { Button, Form, Separator } from '@/components/ui';
+import { Button, Form, Separator, Spinner } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
-import { useAuth } from '@/hooks';
 import { LoginInput, loginSchema } from '@/lib/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { EmailField, PasswordField } from '@/components/forms';
 import { OAuthSection } from './Shared';
+import { useLogin } from '@/hooks/mutations';
 
 export default function LoginForm() {
+	const { mutate, isPending } = useLogin();
 	const form = useForm<LoginInput>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -19,16 +20,15 @@ export default function LoginForm() {
 		},
 	});
 
-	const { login } = useAuth();
-
 	async function onSubmit(data: LoginInput) {
-		try {
-			await login(data);
-		} catch (err) {
-			form.setError('root', {
-				message: err instanceof Error ? err.message : 'Invalid credentials',
-			});
-		}
+		mutate(data, {
+			onError: error => {
+				form.setError('root', {
+					message:
+						error.message ?? 'Something went wrong. Please try again later.',
+				});
+			},
+		});
 	}
 
 	return (
@@ -64,9 +64,16 @@ export default function LoginForm() {
 					variant="default"
 					size="lg"
 					type="submit"
-					disabled={form.formState.isSubmitting}
+					disabled={form.formState.isSubmitting || isPending}
 				>
-					{form.formState.isSubmitting ? 'Loading...' : 'Login'}
+					{form.formState.isSubmitting || isPending ? (
+						<>
+							<Spinner />
+							<span>Loading...</span>
+						</>
+					) : (
+						'Login'
+					)}
 				</Button>
 
 				<Separator className="my-4 sm:my-8" />

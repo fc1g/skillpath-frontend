@@ -5,6 +5,10 @@ import { LessonProgressStatus } from '@/types/progress/lesson-progress';
 
 const SECONDS_IN_HOUR = 60 * 60;
 
+const MINUTE = 60_000;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+
 export const formatRating = (
 	value: number,
 	decimals = COURSE_RATING_DECIMALS,
@@ -19,6 +23,68 @@ export const formatDuration = (value: number): string | number => {
 	}
 
 	return Math.round(value / SECONDS_IN_HOUR);
+};
+
+const isSameDay = (a: number, b: number) => {
+	const da = new Date(a);
+	const db = new Date(b);
+	return (
+		da.getFullYear() === db.getFullYear() &&
+		da.getMonth() === db.getMonth() &&
+		da.getDate() === db.getDate()
+	);
+};
+
+const isYesterday = (date: number, now: number) => {
+	const d = new Date(now);
+	d.setDate(d.getDate() - 1);
+	return isSameDay(date, d.getTime());
+};
+
+export const formatDate = (
+	prefix: 'Last accessed' | 'Completed',
+	date: number,
+	now: number = Date.now(),
+) => {
+	if (!Number.isFinite(date)) return `${prefix}`;
+
+	if (date > now) return `${prefix} just now`;
+
+	const diff = now - date;
+
+	if (isSameDay(date, now)) {
+		if (diff < MINUTE) return `${prefix} just now`;
+
+		if (diff < HOUR) {
+			const minutes = Math.floor(diff / MINUTE);
+			return `${prefix} ${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+		}
+
+		if (diff < DAY) {
+			const hours = Math.floor(diff / HOUR);
+			return `${prefix} ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+		}
+
+		return `${prefix} today`;
+	}
+
+	if (isYesterday(date, now)) return `${prefix} yesterday`;
+
+	if (diff < DAY * 7) {
+		const days = Math.floor(diff / DAY);
+		return `${prefix} ${days} ${days === 1 ? 'day' : 'days'} ago`;
+	}
+
+	if (diff < DAY * 30) {
+		const weeks = Math.floor(diff / (DAY * 7));
+		return `${prefix} ${weeks} ${weeks === 1 ? 'week' : 'weeks'} ago`;
+	}
+
+	return `${prefix} ${new Date(date).toLocaleDateString(undefined, {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	} as Intl.DateTimeFormatOptions)}`;
 };
 
 type StepType = 'lesson' | 'challenge';

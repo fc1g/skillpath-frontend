@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Form } from '@/components/ui';
+import { Button, Form, Spinner } from '@/components/ui';
 import { PasswordField } from '@/components/forms';
 import {
 	ProfileChangePasswordInput,
@@ -8,13 +8,20 @@ import {
 	ProfileSetNewPasswordInput,
 	profileSetNewPasswordSchema,
 } from '@/lib/validations';
-import { useUser } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { User } from '@/types/auth';
+import { useChangePassword } from '@/hooks/mutations';
 
-export default function ProfileChangePassword() {
-	const user = useUser();
+type ProfileChangePasswordFormProps = {
+	user: User;
+};
+
+export default function ProfileChangePassword({
+	user,
+}: ProfileChangePasswordFormProps) {
+	const { mutate, isPending } = useChangePassword();
 
 	const form = useForm<ProfileChangePasswordInput | ProfileSetNewPasswordInput>(
 		{
@@ -34,7 +41,25 @@ export default function ProfileChangePassword() {
 	async function onSubmit(
 		data: ProfileChangePasswordInput | ProfileSetNewPasswordInput,
 	) {
-		toast.info("Doesn't work yet, sorry!");
+		mutate(data, {
+			onSuccess: () => {
+				toast.success(
+					user?.hasPassword
+						? 'Password updated successfully!'
+						: 'Password set successfully!',
+					{
+						duration: 5000,
+					},
+				);
+			},
+			onError: error => {
+				form.setError('root', {
+					message:
+						error.message ??
+						'An error occurred while updating your password. Please try again later.',
+				});
+			},
+		});
 	}
 
 	return (
@@ -43,6 +68,8 @@ export default function ProfileChangePassword() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="w-full space-y-3 rounded-lg border-2 p-2 sm:space-y-6 sm:p-4"
 			>
+				<input type="hidden" name="userId" defaultValue={user.id} />
+
 				{user?.hasPassword && (
 					<PasswordField
 						control={form.control}
@@ -77,13 +104,18 @@ export default function ProfileChangePassword() {
 					variant="default"
 					size="lg"
 					type="submit"
-					disabled={form.formState.isSubmitting}
+					disabled={form.formState.isSubmitting || isPending}
 				>
-					{form.formState.isSubmitting
-						? 'Loading...'
-						: user?.hasPassword
-							? 'Update Password'
-							: 'Set Password'}
+					{form.formState.isSubmitting || isPending ? (
+						<>
+							<Spinner />
+							<span>Loading...</span>
+						</>
+					) : user?.hasPassword ? (
+						'Update Password'
+					) : (
+						'Set Password'
+					)}
 				</Button>
 			</form>
 		</Form>

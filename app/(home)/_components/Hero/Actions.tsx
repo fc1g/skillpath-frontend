@@ -2,23 +2,37 @@
 
 import { APP_ROUTES } from '@/constants/routes';
 import ActionBtn from './ActionBtn';
-import { useHasHydratedCourseStore, useLastVisitedCourse } from '@/store';
+import { useLastVisitedCourse } from '@/hooks';
+import { LastVisitedItemType } from '@/types/progress';
 
 export default function Actions() {
-	const lastVisitedCourse = useLastVisitedCourse();
-	const hasHydrated = useHasHydratedCourseStore();
+	const { data, loading, error } = useLastVisitedCourse();
 
 	const getContinueLearningHref = () => {
-		if (!lastVisitedCourse) return null;
+		if (loading || !!error || !data) return null;
 
-		const baseUrl = `${APP_ROUTES.COURSES}/${lastVisitedCourse.id}/${lastVisitedCourse.slug}/learn`;
+		const {
+			lastVisitedCourse: {
+				course: { id: courseId, slug },
+				lastVisitedItemId,
+				lastVisitedItemType,
+			},
+		} = data;
 
-		if (lastVisitedCourse.lessonId) {
-			return `${baseUrl}/lesson/${lastVisitedCourse.lessonId}`;
+		const baseUrl = `${APP_ROUTES.COURSES}/${courseId}/${slug}/learn`;
+
+		if (
+			lastVisitedItemType &&
+			lastVisitedItemType.toLowerCase() === LastVisitedItemType.LESSON
+		) {
+			return `${baseUrl}/lesson/${lastVisitedItemId}`;
 		}
 
-		if (lastVisitedCourse.challengeId) {
-			return `${baseUrl}/challenge/${lastVisitedCourse.challengeId}`;
+		if (
+			lastVisitedItemType &&
+			lastVisitedItemType.toLowerCase() === LastVisitedItemType.CHALLENGE
+		) {
+			return `${baseUrl}/challenge/${lastVisitedItemId}`;
 		}
 
 		return baseUrl;
@@ -28,7 +42,7 @@ export default function Actions() {
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-4 px-2 sm:flex-row">
-			{hasHydrated && continueHref && (
+			{data && continueHref && (
 				<ActionBtn
 					label="Continue Learning"
 					href={continueHref}
@@ -39,7 +53,7 @@ export default function Actions() {
 			<ActionBtn
 				label="Browse Courses"
 				href={APP_ROUTES.COURSES}
-				variant={!lastVisitedCourse ? 'default' : 'outline'}
+				variant={loading || !!error || !data ? 'default' : 'outline'}
 			/>
 		</div>
 	);

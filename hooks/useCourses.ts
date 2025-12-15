@@ -3,10 +3,13 @@ import {
 	CREATE_COURSE_PROGRESS,
 	CreateCourseProgressInput,
 	CreateCourseRatingInput,
-	GET_COURSE_LAST_VISITED_ITEM_ID,
 	GET_COURSE_RATING_AND_PROGRESS,
 	GET_COURSES,
+	GET_LAST_VISITED_COURSE,
+	GET_MY_COMPLETED_COURSES,
+	GET_MY_COURSES,
 	GET_POPULAR_COURSES,
+	LastVisitedCourse,
 	PaginationQueryInput,
 	RATE_COURSE,
 	UPDATE_COURSE_PROGRESS,
@@ -20,6 +23,12 @@ import { LessonProgress } from '@/types/progress/lesson-progress';
 import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
+import { UPDATE_CHALLENGE_DRAFT } from '@/services/graphql/courses/challenges/mutations';
+import { ChallengeDraft } from '@/types/progress/challenge-draft';
+import {
+	CreateChallengeDraftInput,
+	GET_CHALLENGE_DRAFT,
+} from '@/services/graphql/courses/challenges';
 
 type CoursesWithTotal = {
 	courses: {
@@ -69,7 +78,16 @@ export const useCreateCourseProgress = () => {
 	const [mutate, { data, loading, error }] = useMutation<
 		{ createCourseProgress: CourseProgress },
 		{ createCourseProgressInput: CreateCourseProgressInput }
-	>(CREATE_COURSE_PROGRESS);
+	>(CREATE_COURSE_PROGRESS, {
+		refetchQueries: [
+			{
+				query: GET_POPULAR_COURSES,
+				variables: {
+					paginationQueryInput: {},
+				},
+			},
+		],
+	});
 
 	const createCourseProgress = (
 		createCourseProgressInput: CreateCourseProgressInput,
@@ -86,11 +104,49 @@ export const useCreateCourseProgress = () => {
 	return { createCourseProgress, data, loading, error };
 };
 
-export const useUpdateLessonProgress = () => {
+export const useUpdateChallengeDraft = (challengeId: string) => {
+	const [mutate, { data, loading, error }] = useMutation<
+		{
+			updateChallengeDraft: ChallengeDraft;
+		},
+		{ updateChallengeDraftInput: CreateChallengeDraftInput }
+	>(UPDATE_CHALLENGE_DRAFT, {
+		refetchQueries: [
+			{ query: GET_CHALLENGE_DRAFT, variables: { challengeId } },
+		],
+		awaitRefetchQueries: true,
+	});
+
+	const updateChallengeDraft = (
+		updateChallengeDraftInput: CreateChallengeDraftInput,
+	) =>
+		mutate({
+			variables: {
+				updateChallengeDraftInput,
+			},
+		});
+
+	return { updateChallengeDraft, data, loading, error };
+};
+
+export const useUpdateLessonProgress = (courseId: string) => {
 	const [mutate, { data, loading, error }] = useMutation<{
 		updateLessonProgress: LessonProgress;
 	}>(UPDATE_LESSON_PROGRESS, {
-		refetchQueries: [GET_COURSE_RATING_AND_PROGRESS],
+		refetchQueries: [
+			{
+				query: GET_COURSE_RATING_AND_PROGRESS,
+				variables: {
+					courseId,
+				},
+			},
+			{
+				query: GET_MY_COURSES,
+				variables: {
+					paginationQueryInput: {},
+				},
+			},
+		],
 		awaitRefetchQueries: true,
 	});
 
@@ -125,14 +181,59 @@ export const useCourseRatingAndProgress = (courseId: string) => {
 	return { data, loading, error };
 };
 
-export const useCourseLastVisitedItemId = (courseId: string) => {
+export const useChallengeDraft = (challengeId: string) => {
 	const { data, loading, error } = useQuery<{
-		courseProgressBy: CourseProgress;
-	}>(GET_COURSE_LAST_VISITED_ITEM_ID, {
+		challengeDraft: ChallengeDraft;
+	}>(GET_CHALLENGE_DRAFT, {
 		variables: {
-			courseId,
+			challengeId,
 		},
 		fetchPolicy: 'cache-and-network',
+		ssr: false,
+	});
+
+	return { data, loading, error };
+};
+
+export const useMyCourses = () => {
+	const { data, loading, error } = useQuery<{
+		courseProgresses: {
+			items: CourseProgress[];
+		};
+	}>(GET_MY_COURSES, {
+		variables: {
+			paginationQueryInput: {},
+		},
+		fetchPolicy: 'cache-and-network',
+		ssr: false,
+	});
+
+	return { data, loading, error };
+};
+
+export const useMyCompletedCourses = () => {
+	const { data, loading, error } = useQuery<{
+		completedCourses: {
+			items: CourseProgress[];
+		};
+	}>(GET_MY_COMPLETED_COURSES, {
+		variables: {
+			paginationQueryInput: {},
+			fetchPolicy: 'cache-and-network',
+			ssr: false,
+		},
+	});
+
+	return { data, loading, error };
+};
+
+export const useLastVisitedCourse = () => {
+	const { data, loading, error } = useQuery<{
+		lastVisitedCourse: LastVisitedCourse;
+	}>(GET_LAST_VISITED_COURSE, {
+		fetchPolicy: 'cache-first',
+		nextFetchPolicy: 'cache-first',
+		errorPolicy: 'all',
 		ssr: false,
 	});
 
@@ -151,6 +252,8 @@ export const useUpdateCourseProgress = () => {
 				variables: {
 					updateCourseProgressInput,
 				},
+				refetchQueries: [{ query: GET_LAST_VISITED_COURSE }],
+				awaitRefetchQueries: true,
 				fetchPolicy: 'network-only',
 			}),
 		[mutate],
@@ -163,7 +266,16 @@ export const useRateCourse = () => {
 	const [mutate, { data, loading, error }] = useMutation<
 		{ rateCourse: CourseRating },
 		{ createCourseRatingInput: CreateCourseRatingInput }
-	>(RATE_COURSE);
+	>(RATE_COURSE, {
+		refetchQueries: [
+			{
+				query: GET_POPULAR_COURSES,
+				variables: {
+					paginationQueryInput: {},
+				},
+			},
+		],
+	});
 
 	useEffect(() => {
 		if (error) {

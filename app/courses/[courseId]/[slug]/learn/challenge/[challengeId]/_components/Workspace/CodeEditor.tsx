@@ -1,11 +1,7 @@
 'use client';
 
 import { Challenge } from '@/types/courses';
-import {
-	useCodeWorkspaceStore,
-	useDraft,
-	useHasHydratedWorkspace,
-} from './_store/useCodeWorkspaceStore';
+import { useCodeWorkspaceStore } from './_store/useCodeWorkspaceStore';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
 import { Editor } from '@monaco-editor/react';
@@ -20,21 +16,26 @@ import {
 import { formatLanguage } from '@/lib/courses/challenges';
 import { capitalize } from '@/lib/utils';
 import { useVim } from './_hooks/useVim';
+import { useAutoSaveDraft } from './_hooks/useAutoSaveDraft';
 
 type CodeEditorProps = {
 	challenge: Challenge;
+	draft: string;
 };
 
-export default function CodeEditor({ challenge }: CodeEditorProps) {
+export default function CodeEditor({ challenge, draft }: CodeEditorProps) {
 	const setDraft = useCodeWorkspaceStore(state => state.setDraft);
-	const hasHydrated = useHasHydratedWorkspace();
-	const savedDraft = useDraft(challenge.id);
 	const { handleMount } = useVim();
 	const { theme } = useTheme();
 
 	const [code, setCode] = useState<string>(
-		hasHydrated && savedDraft ? savedDraft : challenge.templateCode,
+		draft ? draft : challenge.templateCode,
 	);
+
+	useAutoSaveDraft({
+		challengeId: challenge.id,
+		code,
+	});
 
 	const handleChange = (value?: string) => {
 		const next = value ?? '';
@@ -56,7 +57,7 @@ export default function CodeEditor({ challenge }: CodeEditorProps) {
 					className="text-muted-foreground flex h-6 items-center px-2 text-xs"
 				/>
 			</CardHeader>
-			<CardContent className="h-[50vh] w-full px-0 sm:h-[400px] md:px-6">
+			<CardContent className="h-[50vh] w-full px-0 sm:h-100 md:px-6">
 				<Editor
 					path={challenge.path}
 					height="100%"

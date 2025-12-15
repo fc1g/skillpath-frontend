@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const GET_COURSE = gql`
 	query GetCourse($id: ID!) {
 		course(id: $id) {
+			id
 			title
 			subtitle
 			description
@@ -126,7 +127,9 @@ export const GET_COURSE_RATING_AND_PROGRESS = gql`
 				completedLessonsCount
 				completedChallengesCount
 				userId
-				courseId
+				course {
+					id
+				}
 				lastVisitedItemId
 				lessonsProgresses {
 					status
@@ -139,11 +142,52 @@ export const GET_COURSE_RATING_AND_PROGRESS = gql`
 	}
 `;
 
-export const GET_COURSE_LAST_VISITED_ITEM_ID = gql`
-	query GetCourseProgressBy($courseId: ID!) {
-		courseProgressBy(courseId: $courseId) {
+export const GET_MY_COURSES = gql`
+	query GetMyCourses($paginationQueryInput: PaginationQueryInput!) {
+		courseProgresses(paginationQueryInput: $paginationQueryInput) {
+			items {
+				id
+				course {
+					id
+					slug
+					title
+					lessonsCount
+					challengesCount
+				}
+				completedChallengesCount
+				completedLessonsCount
+				lastVisitedItemId
+				lastVisitedItemType
+				lastAccessedAt
+				completedAt
+			}
+		}
+	}
+`;
+
+export const GET_MY_COMPLETED_COURSES = gql`
+	query GetMyCompletedCourses($paginationQueryInput: PaginationQueryInput!) {
+		completedCourses(paginationQueryInput: $paginationQueryInput) {
+			items {
+				course {
+					id
+					title
+				}
+				completedAt
+			}
+		}
+	}
+`;
+
+export const GET_LAST_VISITED_COURSE = gql`
+	query GetLastVisitedCourse {
+		lastVisitedCourse {
+			course {
+				id
+				slug
+			}
 			lastVisitedItemId
-			lastAccessedAt
+			lastVisitedItemType
 		}
 	}
 `;

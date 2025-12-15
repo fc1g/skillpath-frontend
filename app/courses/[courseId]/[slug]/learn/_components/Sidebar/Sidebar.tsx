@@ -12,14 +12,14 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from '@/components/ui';
-import { getInitialCourseLesson } from '@/lib/courses';
-import { Course } from '@/types/courses';
-import SidebarSkeleton from './Skeleton';
-import CourseSection from './Section';
-import CourseLearnProgress from './Progress';
 import { APP_ROUTES } from '@/constants/routes';
 import { useCourseRatingAndProgress } from '@/hooks';
+import { getInitialCourseLesson } from '@/lib/courses';
+import { Course } from '@/types/courses';
 import LeaveRating from './LeaveRating';
+import CourseLearnProgress from './Progress';
+import CourseSection from './Section';
+import SidebarSkeleton from './Skeleton';
 
 type CourseSidebarProps = {
 	course: Course;

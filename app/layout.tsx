@@ -1,7 +1,11 @@
 import { SidebarProvider, Toaster } from '@/components/ui';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { ApolloProvider, AuthBootstrap, ThemeProvider } from './_providers';
+import {
+	ApolloProvider,
+	ReactQueryProvider,
+	ThemeProvider,
+} from './_providers';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,14 +21,14 @@ export default function RootLayout({
 	return (
 		<html className="h-full" lang="en" suppressHydrationWarning>
 			<body className="h-full">
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<ApolloProvider>
-						<AuthBootstrap>
+				<ReactQueryProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<ApolloProvider>
 							<>
 								<SidebarProvider
 									style={{
@@ -36,9 +40,9 @@ export default function RootLayout({
 
 								<Toaster />
 							</>
-						</AuthBootstrap>
-					</ApolloProvider>
-				</ThemeProvider>
+						</ApolloProvider>
+					</ThemeProvider>
+				</ReactQueryProvider>
 			</body>
 		</html>
 	);

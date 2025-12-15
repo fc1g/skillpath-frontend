@@ -3,7 +3,7 @@ import { AbstractEntity } from '@/types/base';
 
 export type User = {
 	email: string;
-	name: string | null;
+	username: string | null;
 	roles: RoleType[];
 	providers: ProviderType[];
 	hasPassword: boolean;

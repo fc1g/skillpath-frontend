@@ -5,29 +5,23 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 	Spinner,
 } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
-import { useAuth } from '@/hooks';
-import { useHasHydratedAuthStore, useStatus, useUser } from '@/store';
 import Link from 'next/link';
+import { useProfile } from '@/hooks/queries';
+import { useLogout } from '@/hooks/mutations';
 
 export default function AccountMenu() {
-	const hasHydrated = useHasHydratedAuthStore();
-	const status = useStatus();
-	const user = useUser();
-
-	const { logout } = useAuth();
-
-	if (hasHydrated && status === 'loading')
-		return (
-			<Button disabled variant="outline">
-				<Spinner />
-				<span>Loading...</span>
-			</Button>
-		);
+	const {
+		isPending: isPendingProfile,
+		isError: isErrorProfile,
+		data,
+	} = useProfile();
+	const { mutate, isPending: isPendingLogout } = useLogout();
 
 	return (
 		<DropdownMenu>
@@ -43,36 +37,53 @@ export default function AccountMenu() {
 					</>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent>
-				{hasHydrated && status === 'authenticated' && user ? (
-					<>
-						<DropdownMenuItem asChild>
-							<Link href={APP_ROUTES.PROFILE}>Profile</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link href={APP_ROUTES.MY_COURSES}>My Courses</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link href={APP_ROUTES.AI_ASSISTANT}>Ai Assistant</Link>
-						</DropdownMenuItem>
+			{isPendingProfile || isPendingLogout ? (
+				<DropdownMenuContent>
+					<DropdownMenuItem disabled>
+						<Spinner />
+						<span>Loading...</span>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			) : (
+				<DropdownMenuContent>
+					{data && !isErrorProfile ? (
+						<>
+							{data.username && !(data.username.length > 15) && (
+								<>
+									<DropdownMenuLabel>{data.username}</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+								</>
+							)}
+							<DropdownMenuItem asChild>
+								<Link href={APP_ROUTES.PROFILE}>Profile</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<Link href={APP_ROUTES.MY_COURSES}>My Courses</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<Link href={APP_ROUTES.AI_ASSISTANT}>Ai Assistant</Link>
+							</DropdownMenuItem>
 
-						<DropdownMenuSeparator />
+							<DropdownMenuSeparator />
 
-						<DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
-					</>
-				) : (
-					<>
-						<DropdownMenuSeparator />
+							<DropdownMenuItem onClick={() => mutate()}>
+								Logout
+							</DropdownMenuItem>
+						</>
+					) : (
+						<>
+							<DropdownMenuSeparator />
 
-						<DropdownMenuItem asChild>
-							<Link href={APP_ROUTES.LOGIN}>Login</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link href={APP_ROUTES.SIGNUP}>Signup</Link>
-						</DropdownMenuItem>
-					</>
-				)}
-			</DropdownMenuContent>
+							<DropdownMenuItem asChild>
+								<Link href={APP_ROUTES.LOGIN}>Login</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<Link href={APP_ROUTES.SIGNUP}>Signup</Link>
+							</DropdownMenuItem>
+						</>
+					)}
+				</DropdownMenuContent>
+			)}
 		</DropdownMenu>
 	);
 }

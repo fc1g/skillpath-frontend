@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { Section } from '@/types/courses';
 import { CourseProgress } from '@/types/progress';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
-import { useActiveSection } from '@/hooks';
+import { useActiveSection } from '../../_hooks';
 import { calculateSectionProgress } from '@/lib/courses';
 
 type CourseSectionProps = {

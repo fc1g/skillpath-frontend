@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	Card,
 	CardContent,
@@ -5,9 +7,17 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui';
-import { ChangePassword, InformationForm } from './_components';
+import {
+	ChangePassword,
+	ChangePasswordSkeleton,
+	InformationForm,
+	InformationFormSkeleton,
+} from './_components';
+import { useProfile } from '@/hooks/queries';
 
 export default function ProfilePage() {
+	const { isPending, isError, data } = useProfile();
+
 	return (
 		<div className="grid grid-cols-1 gap-6">
 			<Card>
@@ -18,7 +28,8 @@ export default function ProfilePage() {
 					<CardDescription>Update your personal details</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<InformationForm />
+					{isPending && <InformationFormSkeleton />}
+					{data && !isError && <InformationForm user={data} />}
 				</CardContent>
 			</Card>
 
@@ -32,7 +43,8 @@ export default function ProfilePage() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<ChangePassword />
+					{isPending && <ChangePasswordSkeleton />}
+					{data && !isError && <ChangePassword user={data} />}
 				</CardContent>
 			</Card>
 		</div>

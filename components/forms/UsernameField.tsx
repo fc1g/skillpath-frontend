@@ -17,7 +17,7 @@ type UsernameFieldProps<T extends FieldValues> = {
 export default function UsernameField<T extends FieldValues>({
 	control,
 	name,
-	label = 'Full Name',
+	label = 'Username',
 }: UsernameFieldProps<T>) {
 	return (
 		<FormField

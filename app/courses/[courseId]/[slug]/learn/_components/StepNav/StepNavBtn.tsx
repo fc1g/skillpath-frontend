@@ -27,7 +27,8 @@ export default function StepNavBtn({
 	slug,
 }: StepNavBtnProps) {
 	const router = useRouter();
-	const { updateLessonProgress, loading, error } = useUpdateLessonProgress();
+	const { updateLessonProgress, loading, error } =
+		useUpdateLessonProgress(courseId);
 
 	if ((type === 'prev' && !nextStep.type) || (type === 'prev' && !nextStep.id))
 		return <div></div>;

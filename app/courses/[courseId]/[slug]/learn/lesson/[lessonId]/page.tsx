@@ -32,11 +32,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
 	return (
 		<div className="flex flex-1 flex-col gap-6 p-4 sm:p-8">
-			<CourseProgressTracker
-				courseId={courseId}
-				slug={slug}
-				lessonId={lessonId}
-			/>
+			<CourseProgressTracker courseId={courseId} lessonId={lessonId} />
 			<article className="prose prose-slate dark:prose-invert prose-pre:whitespace-pre-wrap prose-pre:wrap-break-word max-w-none wrap-break-word">
 				<ReactMarkdown remarkPlugins={[remarkGfm]}>
 					{lesson.content}

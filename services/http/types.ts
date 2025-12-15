@@ -2,11 +2,11 @@ export type HttpRequestOptions = {
 	path: string;
 	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	body?: unknown;
-	type?: 'client' | 'server';
+	cookies?: Record<string, string>;
 };
 
 export type BackendErrorBody = {
-	message: string;
+	message: string | string[];
 	error: string | string[];
 	statusCode: number;
 };

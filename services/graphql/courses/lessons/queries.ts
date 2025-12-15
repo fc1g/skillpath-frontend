@@ -24,6 +24,7 @@ export const GET_LESSON_METADATA = gql`
 export const GET_LESSON = gql`
 	query GetLesson($id: ID!) {
 		lesson(id: $id) {
+			id
 			title
 			order
 			content

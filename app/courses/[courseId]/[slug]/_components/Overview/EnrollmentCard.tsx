@@ -7,12 +7,13 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
+	Spinner,
 } from '@/components/ui';
 import { useRouter } from 'next/navigation';
 import { useCreateCourseProgress } from '@/hooks';
 import { APP_ROUTES } from '@/constants/routes';
 import { CourseProgressStatus } from '@/types/progress';
-import { useHasHydratedAuthStore, useStatus, useUser } from '@/store';
+import { useProfile } from '@/hooks/queries';
 
 type CourseEnrollmentCardProps = {
 	courseId: string;
@@ -29,12 +30,14 @@ export default function CourseEnrollmentCard({
 }: CourseEnrollmentCardProps) {
 	const router = useRouter();
 	const { createCourseProgress, loading, error } = useCreateCourseProgress();
-	const user = useUser();
-	const status = useStatus();
-	const hasHydrated = useHasHydratedAuthStore();
+	const {
+		isPending: isPendingProfile,
+		isError: isErrorProfile,
+		data,
+	} = useProfile();
 
 	const handleClick = async () => {
-		if (!user || status !== 'authenticated') {
+		if (isErrorProfile || !data) {
 			router.push(APP_ROUTES.LOGIN);
 			return;
 		}
@@ -62,14 +65,23 @@ export default function CourseEnrollmentCard({
 
 					<Button
 						onClick={handleClick}
-						disabled={loading || !!error || !hasHydrated}
+						disabled={loading || !!error || isPendingProfile}
 						className="flex cursor-pointer items-center justify-center gap-2"
 						variant="ghost"
 					>
-						<svg className="size-5">
-							<use href="/icons/sprite.svg#play" />
-						</svg>
-						<span>{loading ? 'Loading...' : 'Start Course'}</span>
+						{loading ? (
+							<>
+								<Spinner />
+								<span>Loading...</span>
+							</>
+						) : (
+							<>
+								<svg className="size-5">
+									<use href="/icons/sprite.svg#play" />
+								</svg>
+								<span>Start Course</span>
+							</>
+						)}
 					</Button>
 				</CardHeader>
 				<CardContent className="space-y-3">

@@ -1,25 +1,25 @@
 import { HttpRequestOptions, HttpResponse } from './types';
-import { INTERNAL_API_URL, NEXT_PUBLIC_API_URL } from '@/config/env';
+import { getApiUrl } from '@/services/utils';
 
 export async function httpRequest<T>({
 	path,
 	method,
 	body,
-	type = 'server',
+	cookies,
 }: HttpRequestOptions): Promise<HttpResponse<T>> {
 	try {
-		const res = await fetch(
-			`${type === 'client' ? NEXT_PUBLIC_API_URL : INTERNAL_API_URL}/${path}`,
-			{
-				method,
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
+		const res = await fetch(`${getApiUrl()}/${path}`, {
+			method,
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				...{
+					Authorization: `Bearer ${cookies?.accessToken || ''}`,
 				},
-				body: method === 'GET' || !body ? undefined : JSON.stringify(body),
-				credentials: 'same-origin',
 			},
-		);
+			body: method === 'GET' || !body ? undefined : JSON.stringify(body),
+			credentials: 'same-origin',
+		});
 
 		let responseBody;
 

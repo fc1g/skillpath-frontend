@@ -29,6 +29,7 @@ export const GET_CHALLENGE_METADATA = gql`
 export const GET_CHALLENGE = gql`
 	query GetChallenge($id: ID!) {
 		challenge(id: $id) {
+			id
 			path
 			title
 			instructions
@@ -40,6 +41,14 @@ export const GET_CHALLENGE = gql`
 			order
 			expectedOutput
 			expectedStructure
+		}
+	}
+`;
+
+export const GET_CHALLENGE_DRAFT = gql`
+	query GetChallengeDraft($challengeId: ID!) {
+		challengeDraft(challengeId: $challengeId) {
+			code
 		}
 	}
 `;

@@ -8,27 +8,6 @@ export const CREATE_COURSE_PROGRESS = gql`
 			createCourseProgressInput: $createCourseProgressInput
 		) {
 			status
-			completedLessonsCount
-			completedChallengesCount
-			userId
-			courseId
-			lessonsProgresses {
-				status
-				userId
-				lessonId
-			}
-			challengesAttempts {
-				status
-				submittedCode
-				attempts
-				testResults
-				userId
-				challengeId
-				attemptedAt
-				completedAt
-			}
-			lastAccessedAt
-			completedAt
 		}
 	}
 `;
@@ -54,7 +33,9 @@ export const UPDATE_COURSE_PROGRESS = gql`
 			completedLessonsCount
 			completedChallengesCount
 			userId
-			courseId
+			course {
+				id
+			}
 			lastVisitedItemId
 			lastAccessedAt
 			completedAt

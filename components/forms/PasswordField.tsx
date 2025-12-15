@@ -9,7 +9,7 @@ import {
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 type PasswordFieldProps<T extends FieldValues> = {
-	control: Control<T>;
+	control?: Control<T>;
 	name: FieldPath<T>;
 	label?: string;
 	autoComplete?: 'current-password' | 'new-password';
