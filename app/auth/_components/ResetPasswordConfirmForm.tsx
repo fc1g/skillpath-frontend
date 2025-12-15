@@ -3,7 +3,6 @@
 import { Button, Form } from '@/components/ui';
 import { useForm } from 'react-hook-form';
 import {
-	ProfileSetNewPasswordInput,
 	ResetPasswordConfirmInput,
 	resetPasswordConfirmSchema,
 } from '@/lib/validations';
@@ -27,7 +26,7 @@ export default function ResetPasswordConfirmForm({
 		},
 	});
 
-	async function onSubmit(data: ProfileSetNewPasswordInput) {
+	async function onSubmit(data: ResetPasswordConfirmInput) {
 		toast.info("Doesn't work yet, sorry!");
 	}
 
