@@ -78,7 +78,7 @@ export default function AccountMenu() {
 								<Link href={APP_ROUTES.LOGIN}>Login</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem asChild>
-								<Link href={APP_ROUTES.SIGNUP}>Signup</Link>
+								<Link href={APP_ROUTES.SIGNUP}>Sign up</Link>
 							</DropdownMenuItem>
 						</>
 					)}

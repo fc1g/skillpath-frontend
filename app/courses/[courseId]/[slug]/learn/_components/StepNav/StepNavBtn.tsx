@@ -3,8 +3,9 @@
 import { Button } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
 import { useRouter } from 'next/navigation';
-import { useUpdateLessonProgress } from '@/hooks';
+import { useCourseRatingAndProgress, useUpdateLessonProgress } from '@/hooks';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
+import { toast } from 'sonner';
 
 type Step = {
 	id?: string;
@@ -27,6 +28,11 @@ export default function StepNavBtn({
 	slug,
 }: StepNavBtnProps) {
 	const router = useRouter();
+	const {
+		data: progressData,
+		loading: loadingProgress,
+		error: errorProgress,
+	} = useCourseRatingAndProgress(courseId);
 	const { updateLessonProgress, loading, error } =
 		useUpdateLessonProgress(courseId);
 
@@ -50,16 +56,36 @@ export default function StepNavBtn({
 				},
 			);
 		}
+
+		const progress = progressData?.courseRatingAndProgress.progress;
+		if (type === 'prev' || !progress) {
+			return;
+		}
+
+		if (
+			progress.course.lessonsCount + progress.course.challengesCount ===
+			progress.completedLessonsCount + progress.completedChallengesCount
+		) {
+			toast.success('Congratulations! You have completed the course!');
+		} else {
+			toast.info(
+				'In order to complete the course, you must complete all steps (lessons and challenges)',
+			);
+		}
 	};
 
 	return (
 		<Button
 			size="lg"
 			variant={type === 'prev' ? 'ghost' : 'default'}
-			disabled={loading || !!error}
+			disabled={loading || !!error || loadingProgress || !!errorProgress}
 			onClick={handleClick}
 		>
-			{type === 'prev' ? 'Previous' : 'Next'}
+			{type === 'next' && nextStep.id
+				? 'Next'
+				: type === 'next' && !nextStep.id
+					? 'Complete course'
+					: 'Previous'}
 		</Button>
 	);
 }

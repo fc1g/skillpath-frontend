@@ -16,7 +16,9 @@ export default function CourseNotFound({
 				<Link href={APP_ROUTES.COURSES}>Browse Courses</Link>
 			</Button>
 			<Button variant="outline" size="lg" asChild>
-				<Link href={APP_ROUTES.HOME}>Back to Homepage</Link>
+				<Link href={APP_ROUTES.HOME} prefetch={false}>
+					Back to Homepage
+				</Link>
 			</Button>
 		</Error>
 	);

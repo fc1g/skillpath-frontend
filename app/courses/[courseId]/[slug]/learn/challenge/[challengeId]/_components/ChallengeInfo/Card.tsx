@@ -5,11 +5,17 @@ type GridCardProps = {
 	label: string;
 	icon: string;
 	children: ReactNode;
+	className?: string;
 };
 
-export default function GridCard({ label, icon, children }: GridCardProps) {
+export default function GridCard({
+	label,
+	icon,
+	children,
+	className,
+}: GridCardProps) {
 	return (
-		<Card>
+		<Card className={className}>
 			<CardHeader>
 				<CardTitle className="flex items-center gap-2 space-y-4">
 					<div className="mb-0 flex items-center justify-center">

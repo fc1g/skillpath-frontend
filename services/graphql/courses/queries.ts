@@ -129,6 +129,8 @@ export const GET_COURSE_RATING_AND_PROGRESS = gql`
 				userId
 				course {
 					id
+					lessonsCount
+					challengesCount
 				}
 				lastVisitedItemId
 				lessonsProgresses {

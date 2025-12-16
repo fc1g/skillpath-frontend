@@ -11,7 +11,9 @@ export default function NotFound() {
 						the home page."
 		>
 			<Button variant="default" size="lg" asChild>
-				<Link href={APP_ROUTES.HOME}>Back to Homepage</Link>
+				<Link href={APP_ROUTES.HOME} prefetch={false}>
+					Back to Homepage
+				</Link>
 			</Button>
 		</Error>
 	);

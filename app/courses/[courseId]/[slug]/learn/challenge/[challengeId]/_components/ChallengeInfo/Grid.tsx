@@ -24,8 +24,12 @@ export default function ChallengeInfoGrid({
 				</ul>
 			</GridCard>
 
-			<GridCard label="Example" icon="code">
-				<pre>
+			<GridCard
+				className="lg:col-span-2 xl:col-span-1"
+				label="Example"
+				icon="code"
+			>
+				<pre className="wrap-break-word whitespace-pre-wrap">
 					<code>{challenge.example}</code>
 				</pre>
 			</GridCard>

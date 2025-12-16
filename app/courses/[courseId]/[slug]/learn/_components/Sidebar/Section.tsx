@@ -56,35 +56,37 @@ export default function CourseSection({
 						</CollapsibleTrigger>
 						<CollapsibleContent>
 							<SidebarMenuSub>
-								{section.lessons.map(lesson => {
-									const lessonProgress = progress.lessonsProgresses.find(
-										lessonProgress => lessonProgress.lessonId === lesson.id,
-									);
+								{section.lessons
+									.sort((a, b) => a.order - b.order)
+									.map(lesson => {
+										const lessonProgress = progress.lessonsProgresses.find(
+											lessonProgress => lessonProgress.lessonId === lesson.id,
+										);
 
-									if (!lessonProgress) {
-										// 	TODO: Create lesson progress
-									}
+										if (!lessonProgress) {
+											// 	TODO: Create lesson progress
+										}
 
-									return (
-										<SidebarMenuSubItem key={lesson.id}>
-											<SidebarMenuSubButton
-												asChild
-												isActive={lessonId === lesson.id}
-											>
-												<Link href={`${baseHref}/lesson/${lesson.id}`}>
-													<div>
-														<svg className="size-5">
-															<use
-																href={`/icons/sprite.svg#${lessonProgress?.status.toLowerCase() === LessonProgressStatus.COMPLETED ? 'check' : 'unchecked'}`}
-															/>
-														</svg>
-													</div>
-													<span>{lesson.title}</span>
-												</Link>
-											</SidebarMenuSubButton>
-										</SidebarMenuSubItem>
-									);
-								})}
+										return (
+											<SidebarMenuSubItem key={lesson.id}>
+												<SidebarMenuSubButton
+													asChild
+													isActive={lessonId === lesson.id}
+												>
+													<Link href={`${baseHref}/lesson/${lesson.id}`}>
+														<div>
+															<svg className="size-5">
+																<use
+																	href={`/icons/sprite.svg#${lessonProgress?.status.toLowerCase() === LessonProgressStatus.COMPLETED ? 'check' : 'unchecked'}`}
+																/>
+															</svg>
+														</div>
+														<span>{lesson.title}</span>
+													</Link>
+												</SidebarMenuSubButton>
+											</SidebarMenuSubItem>
+										);
+									})}
 
 								{section.challenges.map(challenge => {
 									return (
