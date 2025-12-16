@@ -9,11 +9,11 @@ import {
 	CardTitle,
 	Spinner,
 } from '@/components/ui';
-import { useRouter } from 'next/navigation';
-import { useCreateCourseProgress } from '@/hooks';
 import { APP_ROUTES } from '@/constants/routes';
-import { CourseProgressStatus } from '@/types/progress';
+import { useCreateCourseProgress } from '@/hooks';
 import { useProfile } from '@/hooks/queries';
+import { CourseProgressStatus } from '@/types/progress';
+import { useRouter } from 'next/navigation';
 
 type CourseEnrollmentCardProps = {
 	courseId: string;
@@ -33,11 +33,11 @@ export default function CourseEnrollmentCard({
 	const {
 		isPending: isPendingProfile,
 		isError: isErrorProfile,
-		data,
+		data: profile,
 	} = useProfile();
 
 	const handleClick = async () => {
-		if (isErrorProfile || !data) {
+		if (isErrorProfile || !profile) {
 			router.push(APP_ROUTES.LOGIN);
 			return;
 		}

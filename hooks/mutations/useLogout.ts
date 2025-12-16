@@ -2,10 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { httpRequest } from '@/services/http';
 import { API_ROUTES, APP_ROUTES } from '@/constants/routes';
 import { useRouter } from 'next/navigation';
-import { PROFILE_QUERY_KEY } from '@/hooks/queries';
+import { useApolloClient } from '@apollo/client/react';
 
 export const useLogout = () => {
 	const queryClient = useQueryClient();
+	const apolloClient = useApolloClient();
 	const router = useRouter();
 
 	return useMutation({
@@ -24,8 +25,11 @@ export const useLogout = () => {
 				);
 			return response.body;
 		},
-		onSuccess: () => {
-			queryClient.setQueryData(PROFILE_QUERY_KEY, null);
+		onSuccess: async () => {
+			queryClient.clear();
+
+			await apolloClient.clearStore();
+
 			router.push(APP_ROUTES.HOME);
 		},
 	});

@@ -23,6 +23,7 @@ import { LessonProgress } from '@/types/progress/lesson-progress';
 import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useProfile } from '@/hooks/queries';
 import { UPDATE_CHALLENGE_DRAFT } from '@/services/graphql/courses/challenges/mutations';
 import { ChallengeDraft } from '@/types/progress/challenge-draft';
 import {
@@ -228,9 +229,12 @@ export const useMyCompletedCourses = () => {
 };
 
 export const useLastVisitedCourse = () => {
+	const { data: profile } = useProfile();
+
 	const { data, loading, error } = useQuery<{
 		lastVisitedCourse: LastVisitedCourse;
 	}>(GET_LAST_VISITED_COURSE, {
+		skip: !profile,
 		fetchPolicy: 'cache-first',
 		nextFetchPolicy: 'cache-first',
 		errorPolicy: 'all',
