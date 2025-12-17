@@ -29,7 +29,7 @@ import { CourseProgress } from '@/types/progress';
 import { ChallengeDraft } from '@/types/progress/challenge-draft';
 import { LessonProgress } from '@/types/progress/lesson-progress';
 import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 
 type CoursesWithTotal = {
@@ -73,7 +73,10 @@ export const usePopularCourses = (
 		fetchPolicy: 'cache-and-network',
 	});
 
-	return data.popularCourses;
+	return useMemo(
+		() => [...data.popularCourses].sort((a, b) => b.averageRating - a.averageRating),
+		[data.popularCourses],
+	);
 };
 
 export const useCreateCourseProgress = () => {
