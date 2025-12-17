@@ -1,8 +1,10 @@
+import { useProfile } from '@/hooks/queries';
 import {
 	CoursesPaginationQueryInput,
 	CREATE_COURSE_PROGRESS,
 	CreateCourseProgressInput,
 	CreateCourseRatingInput,
+	DEFAULT_LIMIT,
 	GET_COURSE_RATING_AND_PROGRESS,
 	GET_COURSES,
 	GET_LAST_VISITED_COURSE,
@@ -15,21 +17,20 @@ import {
 	UPDATE_COURSE_PROGRESS,
 	UpdateCourseProgressInput,
 } from '@/services/graphql/courses';
-import { UpdateLessonProgressInput } from '@/services/graphql/courses/lessons';
-import { UPDATE_LESSON_PROGRESS } from '@/services/graphql/courses/lessons/mutations';
-import { Course, CourseRating } from '@/types/courses';
-import { CourseProgress } from '@/types/progress';
-import { LessonProgress } from '@/types/progress/lesson-progress';
-import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
-import { useCallback, useEffect } from 'react';
-import { toast } from 'sonner';
-import { useProfile } from '@/hooks/queries';
-import { UPDATE_CHALLENGE_DRAFT } from '@/services/graphql/courses/challenges/mutations';
-import { ChallengeDraft } from '@/types/progress/challenge-draft';
 import {
 	CreateChallengeDraftInput,
 	GET_CHALLENGE_DRAFT,
 } from '@/services/graphql/courses/challenges';
+import { UPDATE_CHALLENGE_DRAFT } from '@/services/graphql/courses/challenges/mutations';
+import { UpdateLessonProgressInput } from '@/services/graphql/courses/lessons';
+import { UPDATE_LESSON_PROGRESS } from '@/services/graphql/courses/lessons/mutations';
+import { Course, CourseRating } from '@/types/courses';
+import { CourseProgress } from '@/types/progress';
+import { ChallengeDraft } from '@/types/progress/challenge-draft';
+import { LessonProgress } from '@/types/progress/lesson-progress';
+import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client/react';
+import { useCallback, useEffect } from 'react';
+import { toast } from 'sonner';
 
 type CoursesWithTotal = {
 	courses: {
@@ -84,7 +85,10 @@ export const useCreateCourseProgress = () => {
 			{
 				query: GET_POPULAR_COURSES,
 				variables: {
-					paginationQueryInput: {},
+					paginationQueryInput: {
+						limit: DEFAULT_LIMIT,
+						offset: 0,
+					},
 				},
 			},
 		],
@@ -144,7 +148,10 @@ export const useUpdateLessonProgress = (courseId: string) => {
 			{
 				query: GET_MY_COURSES,
 				variables: {
-					paginationQueryInput: {},
+					paginationQueryInput: {
+						limit: DEFAULT_LIMIT,
+						offset: 0,
+					},
 				},
 			},
 		],
@@ -203,7 +210,10 @@ export const useMyCourses = () => {
 		};
 	}>(GET_MY_COURSES, {
 		variables: {
-			paginationQueryInput: {},
+			paginationQueryInput: {
+				limit: DEFAULT_LIMIT,
+				offset: 0,
+			},
 		},
 		fetchPolicy: 'cache-and-network',
 		ssr: false,
@@ -219,7 +229,10 @@ export const useMyCompletedCourses = () => {
 		};
 	}>(GET_MY_COMPLETED_COURSES, {
 		variables: {
-			paginationQueryInput: {},
+			paginationQueryInput: {
+				limit: DEFAULT_LIMIT,
+				offset: 0,
+			},
 			fetchPolicy: 'cache-and-network',
 			ssr: false,
 		},
@@ -275,10 +288,14 @@ export const useRateCourse = () => {
 			{
 				query: GET_POPULAR_COURSES,
 				variables: {
-					paginationQueryInput: {},
+					paginationQueryInput: {
+						limit: DEFAULT_LIMIT,
+						offset: 0,
+					},
 				},
 			},
 		],
+		awaitRefetchQueries: true,
 	});
 
 	useEffect(() => {

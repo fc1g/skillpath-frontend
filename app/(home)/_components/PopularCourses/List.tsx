@@ -1,8 +1,6 @@
 'use client';
 
 import { CourseCard } from '@/components/features';
-import { usePopularCourses } from '@/hooks/useCourses';
-import { DEFAULT_LIMIT } from '@/services/graphql/courses';
 import {
 	Empty,
 	EmptyDescription,
@@ -10,6 +8,8 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from '@/components/ui';
+import { usePopularCourses } from '@/hooks/useCourses';
+import { DEFAULT_LIMIT } from '@/services/graphql/courses';
 
 export default function List() {
 	const popularCourses = usePopularCourses({ limit: DEFAULT_LIMIT, offset: 0 });
@@ -33,9 +33,11 @@ export default function List() {
 
 	return (
 		<div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-			{popularCourses.map(course => (
-				<CourseCard data={course} key={course.id} />
-			))}
+			{popularCourses
+				.sort((a, b) => a.averageRating - b.averageRating)
+				.map(course => (
+					<CourseCard data={course} key={course.id} />
+				))}
 		</div>
 	);
 }
