@@ -52,7 +52,7 @@ export const useCourses = (
 				level: coursesPaginationQueryInput.level?.toUpperCase(),
 			},
 		},
-		fetchPolicy: 'network-only',
+		fetchPolicy: 'cache-and-network',
 	});
 
 	return data.courses;
@@ -70,7 +70,7 @@ export const usePopularCourses = (
 				offset: paginationQueryInput.offset,
 			},
 		},
-		fetchPolicy: 'network-only',
+		fetchPolicy: 'cache-and-network',
 	});
 
 	return data.popularCourses;
@@ -92,6 +92,7 @@ export const useCreateCourseProgress = () => {
 				},
 			},
 		],
+		awaitRefetchQueries: true,
 	});
 
 	const createCourseProgress = (
@@ -169,7 +170,6 @@ export const useUpdateLessonProgress = (courseId: string) => {
 					courseId: updateLessonProgressInput.courseId,
 				},
 			},
-			fetchPolicy: 'network-only',
 		});
 
 	return { updateLessonProgress, data, loading, error };
@@ -233,9 +233,9 @@ export const useMyCompletedCourses = () => {
 				limit: DEFAULT_LIMIT,
 				offset: 0,
 			},
-			fetchPolicy: 'cache-and-network',
-			ssr: false,
 		},
+		fetchPolicy: 'cache-and-network',
+		ssr: false,
 	});
 
 	return { data, loading, error };
@@ -271,7 +271,6 @@ export const useUpdateCourseProgress = () => {
 				},
 				refetchQueries: [{ query: GET_LAST_VISITED_COURSE }],
 				awaitRefetchQueries: true,
-				fetchPolicy: 'network-only',
 			}),
 		[mutate],
 	);
@@ -315,7 +314,6 @@ export const useRateCourse = () => {
 			variables: {
 				createCourseRatingInput,
 			},
-			fetchPolicy: 'network-only',
 		});
 
 	return { rateCourse, data, loading, error };
