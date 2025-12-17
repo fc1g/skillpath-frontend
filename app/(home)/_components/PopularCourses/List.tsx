@@ -34,7 +34,7 @@ export default function List() {
 	return (
 		<div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
 			{popularCourses
-				.sort((a, b) => a.averageRating - b.averageRating)
+				.sort((a, b) => b.averageRating - a.averageRating)
 				.map(course => (
 					<CourseCard data={course} key={course.id} />
 				))}
