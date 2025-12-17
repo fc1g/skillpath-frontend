@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui';
 import { APP_ROUTES } from '@/constants/routes';
-import { useRouter } from 'next/navigation';
 import { useCourseRatingAndProgress, useUpdateLessonProgress } from '@/hooks';
 import { LessonProgressStatus } from '@/types/progress/lesson-progress';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 type Step = {
@@ -58,7 +58,7 @@ export default function StepNavBtn({
 		}
 
 		const progress = progressData?.courseRatingAndProgress.progress;
-		if (type === 'prev' || !progress) {
+		if (type === 'prev' || !progress || nextStep?.id) {
 			return;
 		}
 

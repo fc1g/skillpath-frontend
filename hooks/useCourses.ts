@@ -51,7 +51,7 @@ export const useCourses = (
 				level: coursesPaginationQueryInput.level?.toUpperCase(),
 			},
 		},
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'network-only',
 	});
 
 	return data.courses;
@@ -69,7 +69,7 @@ export const usePopularCourses = (
 				offset: paginationQueryInput.offset,
 			},
 		},
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'network-only',
 	});
 
 	return data.popularCourses;
@@ -175,7 +175,7 @@ export const useCourseRatingAndProgress = (courseId: string) => {
 		variables: {
 			courseId,
 		},
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'network-only',
 		ssr: false,
 	});
 
@@ -189,7 +189,7 @@ export const useChallengeDraft = (challengeId: string) => {
 		variables: {
 			challengeId,
 		},
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'network-only',
 		ssr: false,
 	});
 
