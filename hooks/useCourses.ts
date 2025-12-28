@@ -74,7 +74,10 @@ export const usePopularCourses = (
 	});
 
 	return useMemo(
-		() => [...data.popularCourses].sort((a, b) => b.averageRating - a.averageRating),
+		() =>
+			[...data.popularCourses].sort(
+				(a, b) => b.averageRating - a.averageRating,
+			),
 		[data.popularCourses],
 	);
 };

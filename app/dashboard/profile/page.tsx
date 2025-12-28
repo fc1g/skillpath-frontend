@@ -8,10 +8,10 @@ import {
 	CardTitle,
 } from '@/components/ui';
 import {
-	ChangePassword,
 	ChangePasswordSkeleton,
 	InformationForm,
 	InformationFormSkeleton,
+	PasswordSettings,
 } from './_components';
 import { useProfile } from '@/hooks/queries';
 
@@ -36,15 +36,16 @@ export default function ProfilePage() {
 			<Card>
 				<CardHeader>
 					<CardTitle className="text-2xl leading-none font-semibold tracking-tight">
-						Change Password
+						{data && data.hasPassword ? 'Change' : 'Set'} Password
 					</CardTitle>
 					<CardDescription>
-						Update your password to keep your account secure
+						{data && data.hasPassword ? 'Update' : 'Set'} your password to keep
+						your account secure
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					{isPending && <ChangePasswordSkeleton />}
-					{data && !isError && <ChangePassword user={data} />}
+					{data && !isError && <PasswordSettings user={data} />}
 				</CardContent>
 			</Card>
 		</div>

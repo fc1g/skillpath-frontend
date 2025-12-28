@@ -15,6 +15,19 @@ const eslintConfig = defineConfig([
 	...nextTs,
 	...queryRecommendedConfigs,
 
+	{
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+				},
+			],
+		},
+	},
+
 	// Override default ignores of eslint-config-next.
 	globalIgnores([
 		// Default ignores of eslint-config-next:
@@ -22,6 +35,9 @@ const eslintConfig = defineConfig([
 		'out/**',
 		'build/**',
 		'next-env.d.ts',
+		'components/ui/**',
+		'services/graphql/**/queries.ts',
+		'services/grpahql/**/mutations.ts',
 	]),
 ]);
 

@@ -15,6 +15,8 @@ import { Suspense } from 'react';
 import { Actions, PopularCoursesList } from './(home)/_components';
 import { ContentLayout } from './_components';
 
+export const revalidate = 0;
+
 export default function Home() {
 	const paginationQueryInput: PaginationQueryInput = {
 		limit: DEFAULT_LIMIT,

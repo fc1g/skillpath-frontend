@@ -5,8 +5,6 @@ import { PasswordField } from '@/components/forms';
 import {
 	ProfileChangePasswordInput,
 	profileChangePasswordSchema,
-	ProfileSetNewPasswordInput,
-	profileSetNewPasswordSchema,
 } from '@/lib/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -23,34 +21,22 @@ export default function ProfileChangePassword({
 }: ProfileChangePasswordFormProps) {
 	const { mutate, isPending } = useChangePassword();
 
-	const form = useForm<ProfileChangePasswordInput | ProfileSetNewPasswordInput>(
-		{
-			resolver: zodResolver(
-				user?.hasPassword
-					? profileChangePasswordSchema
-					: profileSetNewPasswordSchema,
-			),
-			defaultValues: {
-				newPassword: '',
-				newPasswordConfirm: '',
-				currentPassword: '',
-			},
+	const form = useForm<ProfileChangePasswordInput>({
+		resolver: zodResolver(profileChangePasswordSchema),
+		defaultValues: {
+			newPassword: '',
+			newPasswordConfirm: '',
+			currentPassword: '',
+			userId: user.id,
 		},
-	);
+	});
 
-	async function onSubmit(
-		data: ProfileChangePasswordInput | ProfileSetNewPasswordInput,
-	) {
+	async function onSubmit(data: ProfileChangePasswordInput) {
 		mutate(data, {
 			onSuccess: () => {
-				toast.success(
-					user?.hasPassword
-						? 'Password updated successfully!'
-						: 'Password set successfully!',
-					{
-						duration: 5000,
-					},
-				);
+				toast.success('Password updated successfully!', {
+					duration: 5000,
+				});
 			},
 			onError: error => {
 				form.setError('root', {
@@ -70,14 +56,12 @@ export default function ProfileChangePassword({
 			>
 				<input type="hidden" name="userId" defaultValue={user.id} />
 
-				{user?.hasPassword && (
-					<PasswordField
-						control={form.control}
-						name="currentPassword"
-						label="Current Password"
-						autoComplete="current-password"
-					/>
-				)}
+				<PasswordField
+					control={form.control}
+					name="currentPassword"
+					label="Current Password"
+					autoComplete="current-password"
+				/>
 
 				<PasswordField
 					control={form.control}
@@ -111,10 +95,8 @@ export default function ProfileChangePassword({
 							<Spinner />
 							<span>Loading...</span>
 						</>
-					) : user?.hasPassword ? (
-						'Update Password'
 					) : (
-						'Set Password'
+						'Update Password'
 					)}
 				</Button>
 			</form>

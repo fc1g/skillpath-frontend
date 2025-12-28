@@ -19,23 +19,21 @@ export const signUpSchema = withPasswordConfirmation(
 	}),
 );
 
-export const resetPasswordSchema = z.object({
+export const forgotPasswordSchema = z.object({
 	email: emailField,
 });
 
-export const resetPasswordConfirmSchema = withPasswordConfirmation(
+export const resetPasswordSchema = withPasswordConfirmation(
 	z.object({
+		token: z.string().min(1, 'Token is required'),
 		newPassword: passwordField,
 		newPasswordConfirm: passwordConfirmField,
-		token: z.string(),
 	}),
 	'newPassword',
 	'newPasswordConfirm',
 );
 
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
-export type ResetPasswordConfirmInput = z.infer<
-	typeof resetPasswordConfirmSchema
->;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignUpInput = z.infer<typeof signUpSchema>;

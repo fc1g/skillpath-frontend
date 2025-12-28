@@ -53,7 +53,7 @@ export default function LoginForm() {
 
 				<div className="flex items-center justify-end">
 					<Button variant="link" type="button" asChild>
-						<Link href={APP_ROUTES.RESET_PASSWORD}>Reset password</Link>
+						<Link href={APP_ROUTES.FORGOT_PASSWORD}>Forgot password</Link>
 					</Button>
 				</div>
 
@@ -80,7 +80,7 @@ export default function LoginForm() {
 
 				<div className="flex flex-col items-center justify-center gap-4">
 					<span className="text-sm">Don&apos;t have an account?</span>
-					<Button className="w-full" variant="outline" size="lg" asChild={true}>
+					<Button className="w-full" variant="outline" size="lg" asChild>
 						<Link href={APP_ROUTES.SIGNUP}>Sign up</Link>
 					</Button>
 				</div>

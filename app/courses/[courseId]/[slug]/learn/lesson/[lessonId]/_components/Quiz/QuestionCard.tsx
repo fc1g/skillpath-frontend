@@ -81,7 +81,7 @@ export default function QuestionCard({ quiz, index }: QuestionCardProps) {
 							onClick={() => {
 								setSelectedOptionIndex(index);
 							}}
-							className={`flex cursor-default items-center gap-2 px-2 disabled:opacity-80 ${isCorrect && selectedOptionIndex === index && 'bg-green-400 dark:bg-green-900'} ${isVerified && !isCorrect && selectedOptionIndex === index && 'bg-red-400 dark:bg-red-900'}`}
+							className={`flex h-auto w-full cursor-default items-center gap-2 px-2 disabled:opacity-80 ${isCorrect && selectedOptionIndex === index && 'bg-green-400 dark:bg-green-900'} ${isVerified && !isCorrect && selectedOptionIndex === index && 'bg-red-400 dark:bg-red-900'}`}
 						>
 							<div className="relative flex h-4 w-4 items-center justify-center">
 								<input
@@ -96,7 +96,12 @@ export default function QuestionCard({ quiz, index }: QuestionCardProps) {
 									className={`bg-foreground absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 transform rounded-full ${isSelected ? 'block' : 'hidden'}`}
 								></div>
 							</div>
-							<Label htmlFor={option}>{option}</Label>
+							<Label
+								htmlFor={option}
+								className="block flex-1 overflow-hidden text-left leading-normal break-all whitespace-normal"
+							>
+								{option}
+							</Label>
 						</Button>
 					);
 				})}

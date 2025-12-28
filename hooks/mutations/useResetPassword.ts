@@ -1,22 +1,19 @@
 import { useMutation } from '@tanstack/react-query';
-import {
-	ProfileChangePasswordInput,
-	profileChangePasswordSchema,
-} from '@/lib/validations';
+import { ResetPasswordInput, resetPasswordSchema } from '@/lib/validations';
 import { parseAndValidate } from '@/services/utils';
 import { httpRequest } from '@/services/http';
 
-export const useChangePassword = () => {
+export const useResetPassword = () => {
 	return useMutation({
-		mutationFn: async (data: ProfileChangePasswordInput) => {
-			const parsed = await parseAndValidate(data, profileChangePasswordSchema);
+		mutationFn: async (data: ResetPasswordInput) => {
+			const parsed = await parseAndValidate(data, resetPasswordSchema);
 			if (!parsed.ok) throw new Error(parsed.body.message);
 
 			const response = await httpRequest({
-				path: 'auth/change-password',
-				method: 'PATCH',
+				path: 'auth/reset-password',
+				method: 'POST',
 				body: {
-					currentPassword: parsed.data.currentPassword,
+					token: parsed.data.token,
 					newPassword: parsed.data.newPassword,
 				},
 			});

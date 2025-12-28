@@ -148,7 +148,7 @@
 
 @layer components {
 	.wrapper {
-		@apply flex flex-1 min-h-full flex-col overflow-hidden;
+		@apply flex min-h-full flex-1 flex-col overflow-hidden;
 	}
 }
 
@@ -187,18 +187,18 @@
 
 	.dark .spotlight-card::before {
 		background: radial-gradient(
-				800px circle at var(--mouse-x) var(--mouse-y),
-				rgba(255, 255, 255, 0.06),
-				transparent 40%
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(255, 255, 255, 0.06),
+			transparent 40%
 		);
 		z-index: 3;
 	}
 
 	.spotlight-card::before {
 		background: radial-gradient(
-				800px circle at var(--mouse-x) var(--mouse-y),
-				rgba(0, 0, 0, 0.1),
-				transparent 40%
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(0, 0, 0, 0.1),
+			transparent 40%
 		);
 	}
 }
