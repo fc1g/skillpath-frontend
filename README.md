@@ -1,18 +1,88 @@
 # SkillPath Frontend
 
-SkillPath Frontend is the web client for the **SkillPath** learning platform.
+SkillPath Frontend is the web client for the **SkillPath** learning platform,
+built as part of my CS50x final project.
 
-It is built with **Next.js (App Router)** and is designed as a dedicated consumer of the SkillPath BFF/API layer. The
-frontend does not talk directly to internal microservices — all communication goes through the public BFF endpoints.
+The frontend is implemented using **Next.js (App Router)** and is designed to be
+a clean, scalable, and SEO-friendly user interface for exploring courses,
+lessons, and learning progress.  
+It does not communicate directly with internal backend microservices — all data
+flows through a dedicated Backend For Frontend (BFF) layer.
 
-## Features
+---
 
-- Course and lesson browsing
-- Progress-aware learning experience
-- Quizzes and interactive challenges
-- Integration with the SkillPath code runner (for coding tasks)
-- Authentication and user profile flows via BFF
-- Ready for SEO-friendly, production-grade deployment
+## Purpose of the Frontend
+
+The main goal of the frontend is to provide a smooth learning experience while
+keeping client-side logic simple and maintainable.
+
+The frontend is responsible for:
+
+- Rendering courses and lessons
+- Managing navigation and layouts
+- Handling authentication-related UI flows
+- Displaying user progress and learning state
+- Preparing the UI for future interactive coding challenges
+
+All business logic and data aggregation are intentionally handled on the backend
+side.
+
+---
+
+## Tech Stack
+
+- **Next.js** (App Router)
+- **TypeScript**
+- **React**
+- **pnpm** for package management
+
+The App Router was chosen to take advantage of modern routing, layouts, and
+server-side rendering capabilities.
+
+---
+
+## Architecture Notes
+
+The frontend follows a strict separation of concerns:
+
+- UI components focus only on presentation
+- API communication is centralized
+- No direct access to internal services (Auth, Courses, etc.)
+
+This approach reduces coupling and allows backend services to evolve without
+requiring frontend changes.
+
+---
+
+## Project Structure
+
+Key directories in the project:
+
+- `app/`  
+  Contains routes, layouts, and pages using the Next.js App Router.
+
+- `public/`  
+  Static assets such as images and icons.
+
+- Feature-based modules,  
+  UI components, API helpers, and shared logic are organized to keep the
+  codebase modular and maintainable.
+
+---
+
+## Environment Configuration
+
+Create a `.env.development.local` file in the root of this repository.
+
+Example configuration:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+This variable should point to the SkillPath BFF endpoint.
+
+---
 
 ## Getting Started
 
@@ -20,7 +90,7 @@ frontend does not talk directly to internal microservices — all communication 
 
 - Node.js (LTS)
 - pnpm
-- Running SkillPath backend/BFF (see root `skillpath` README and `skillpath-bff`)
+- Running SkillPath backend and BFF services
 
 ### Installation
 
@@ -30,31 +100,17 @@ Install dependencies:
 pnpm install
 ```
 
-### Environment
-
-Create `.env.development.local` in this directory and configure your API/BFF endpoint, for example:
-
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:3001
-```
-
-(Use the actual URL exposed by your SkillPath BFF.)
-
 ### Development
 
-Start the local development server:
+Start the development server:
 
 ```bash
 pnpm dev
 ```
 
-The app will be available at:
+The application will be available at: (<http://localhost:3000>)
 
-```text
-http://localhost:3000
-```
-
-### Build
+### Production Build
 
 Create an optimized production build:
 
@@ -68,19 +124,34 @@ Run the production server:
 pnpm start
 ```
 
-## Project Structure
+---
 
-Key directories:
+## Design Decisions
 
-- `app/` — application routes and layouts
-- `public/` — static assets
-- other feature modules are organized to keep UI, API calls, and shared logic modular and maintainable
+- **BFF-only communication**  
+  The frontend never communicates directly with backend microservices.
 
-## Related Repositories
+- **App Router over Pages Router**  
+  Chosen for better layout composition and future scalability.
 
-This project is part of the **SkillPath** setup:
+- **SEO-first mindset**  
+  The project is structured to support server-side rendering and metadata
+  generation.
 
-- Root monorepo / shell: coordinates frontend, backend and infra
-- `skillpath-bff` — BFF/API gateway and backend services
+---
 
-Refer to the root `README.md` for full architecture and setup details.
+## Relation to the Main Project
+
+This repository represents only the frontend part of **SkillPath**.
+
+For full system architecture, backend services, Docker setup, and infrastructure
+details, refer to the root SkillPath repository.
+
+---
+
+## Final Notes
+
+This frontend was designed to be clean, extensible, and production-oriented
+rather than feature-heavy.  
+It reflects my focus on maintainable architecture and modern React patterns
+learned during CS50x.
