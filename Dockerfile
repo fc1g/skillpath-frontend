@@ -38,17 +38,14 @@ FROM base AS runner
 
 ARG HTTP_PORT
 ENV HTTP_PORT=${HTTP_PORT}
-
 ENV NODE_ENV=production
 
-COPY --from=builder /usr/src/app/.next ./.next
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/.next/standalone ./
+COPY --from=builder /usr/src/app/.next/static ./.next/static
 COPY --from=builder /usr/src/app/public ./public
-
-COPY --from=builder /usr/src/app/package.json ./package.json
-COPY --from=builder /usr/src/app/next.config.ts ./next.config.ts
-
-COPY --from=deps /usr/src/app/node_modules ./node_modules
 
 EXPOSE ${HTTP_PORT}
 
-CMD ["pnpm", "start"]
+CMD ["node", "server.js"]
